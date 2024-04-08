@@ -31,4 +31,13 @@ mongoose
 		console.log(err);
 	});
 
+// Root Route
+app.get("/", (req, res) => {
+	if (mongoose.connection.readyState === 1) {
+		res.send("Connection to the database is successful.");
+	} else {
+		res.status(500).send("Failed to connect to the database.");
+	}
+});
+
 module.exports = app;
