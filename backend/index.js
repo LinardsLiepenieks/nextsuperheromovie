@@ -30,3 +30,5 @@ mongoose
 		console.log(process.env.DB_URI);
 		console.log(err);
 	});
+
+module.exports = app;
