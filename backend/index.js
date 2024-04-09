@@ -3,6 +3,7 @@ require("dotenv").config();
 //requires
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const movieRoutes = require("./routes/movies");
 
 //app
@@ -10,6 +11,13 @@ const app = express();
 
 //middleware
 app.use(express.json());
+app.use(
+	curs({
+		origin: [process.env.DB_URI],
+		methods: ["GET"],
+		credentials: true,
+	})
+);
 app.use((req, res, next) => {
 	console.log(req.path, req.method);
 	next();
@@ -36,7 +44,9 @@ app.get("/", (req, res) => {
 	if (mongoose.connection.readyState === 1) {
 		res.send("Connection to the database is successful.");
 	} else {
-		res.status(500).send("Failed to connect to the database.");
+		res
+			.status(500)
+			.send("Failed to connect to the database.", process.env.DB_URI);
 	}
 });
 
