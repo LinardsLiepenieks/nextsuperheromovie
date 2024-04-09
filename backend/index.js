@@ -30,14 +30,14 @@ app.use("/api/movies", movieRoutes);
 
 //db
 mongoose
-	.connect(process.env.DB_URI)
+	.connect(process.env.MONGODB_URI)
 	.then(() => {
 		app.listen(process.env.PORT, () => {
 			console.log("connected");
 		});
 	})
 	.catch((err) => {
-		console.log(process.env.DB_URI);
+		console.log(process.env.MONGODB_URI);
 		console.log(err);
 	});
 
