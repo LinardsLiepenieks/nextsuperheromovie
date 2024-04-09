@@ -12,8 +12,8 @@ const app = express();
 //middleware
 app.use(express.json());
 app.use(
-	curs({
-		origin: [process.env.DB_URI],
+	cors({
+		origin: [process.env.FRONTEND],
 		methods: ["GET"],
 		credentials: true,
 	})
