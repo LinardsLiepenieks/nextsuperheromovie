@@ -19,7 +19,10 @@ if (process.env.FRONTEND) {
 			credentials: true,
 		})
 	);
+} else {
+	app.use(cors());
 }
+
 app.use((req, res, next) => {
 	console.log(req.path, req.method);
 	next();

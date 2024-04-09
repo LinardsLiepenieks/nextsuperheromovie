@@ -35,9 +35,12 @@ const Landing = () => {
 	useEffect(() => {
 		const fetchMovies = async () => {
 			try {
-				const response = await fetch("/api/movies");
-
+				const apiUrl = process.env.REACT_APP_API_URL;
+				console.log(apiUrl);
+				const response = await fetch(`${apiUrl}api/movies`);
 				const data = await response.json();
+				console.log(data);
+
 				console.log(data);
 
 				if (data.length > 0) {
