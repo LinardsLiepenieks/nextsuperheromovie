@@ -1,18 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { formatDate } from "../utils/formatter";
+import { useMetadata } from "../context/MetadataContext";
 import MovieListItem from "../components/movieListItem";
 import CountdownTimer from "../components/countdown";
 import YoutubeVideo from "../components/youtubeVideo";
-import { formatDate } from "../utils/formatter";
 
 const Landing = () => {
 	const [movies, setMovies] = useState([]);
 	const [movie, setMovie] = useState(null);
 	const [selectedPhase, setSelectedPhase] = useState(5);
+	const { setDescription, setKeywords } = useMetadata();
 
 	const landingRef = useRef(null);
 
+	const updateMovie = useCallback(
+		(movie) => {
+			if (movie) {
+				setMovie(movie);
+
+				setDescription(movie.title + " out at " + movie.releaseDate);
+				setKeywords(movie.title);
+			}
+		},
+		[setDescription, setKeywords]
+	);
+
 	const changeMovie = (movie) => {
-		setMovie(movie);
+		updateMovie(movie);
 
 		landingRef.current.scrollIntoView({
 			behavior: "smooth",
@@ -36,24 +50,22 @@ const Landing = () => {
 		const fetchMovies = async () => {
 			try {
 				const apiUrl = process.env.REACT_APP_API_URL;
-				console.log(apiUrl);
 				const response = await fetch(`${apiUrl}api/movies`);
 				const data = await response.json();
-				console.log(data);
 
 				console.log(data);
 
 				if (data.length > 0) {
 					setMovies(data);
 					console.log(response);
-					setMovie(getCurrentMovie(data));
+					updateMovie(getCurrentMovie(data));
 				}
 			} catch (error) {
 				console.error("Error fetching /api/movies ", error);
 			}
 		};
 		fetchMovies();
-	}, []);
+	}, [updateMovie]);
 
 	/*could separate into component*/
 
