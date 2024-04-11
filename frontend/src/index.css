@@ -181,6 +181,11 @@ nav .container {
 	max-height: 600px;
 	background-color: gray;
 }
+.ad-trailer-vertical {
+	max-width: 160px;
+	max-height: 600px;
+	background-color: gray;
+}
 .trailer-container {
 	font-family: "Roboto Condensed", sans-serif;
 }
@@ -189,13 +194,14 @@ nav .container {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	padding: 8px auto;
 }
 .trailer-group {
-	margin: 8px auto;
 }
 .trailer-container .trailer-title {
 	font-size: var(--fs-xxxl);
 	color: var(--secondary);
+	max-width: 100%;
 	font-weight: 300;
 	letter-spacing: 2.4px;
 	margin: 8px auto;
@@ -234,7 +240,7 @@ nav .container {
 }
 .movie-list-group {
 	flex-grow: 1;
-	margin: 32px 64px;
+	margin: 32px auto;
 	color: var(--secondary);
 	font-family: "Roboto Condensed", sans-serif;
 }
@@ -438,4 +444,31 @@ footer {
 	letter-spacing: 0;
 	text-decoration: none;
 	border-bottom: 1px solid var(--secondary);
+}
+
+@media screen and (max-width: 800px) {
+	:root {
+		font-size: 6px;
+	}
+
+	.trailer-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.ad-trailer-vertical {
+		max-width: 728px;
+		max-height: 90px;
+		background-color: gray;
+	}
+	.trailer {
+		max-width: 100%;
+	}
+	.trailer-group {
+		width: 100%;
+	}
+	.embedded-trailer {
+		max-width: 100%; /* Allow the video container to fill the available width */
+		margin-bottom: 20px; /* Add some spacing between trailer and other elements */
+	}
 }

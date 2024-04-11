@@ -9,7 +9,7 @@ const MovieListItem = ({ movie, onClick }) => {
 			className={`movie-item ${releaseDateClass}`}
 			onClick={onClick}>
 			<span className="movie">
-				{movie.title}{" "}
+				<span className="movie-list-item-title">{movie.title} </span>
 				<span className="movie-date">{formatDateShort(movie.releaseDate)}</span>
 			</span>
 		</li>
