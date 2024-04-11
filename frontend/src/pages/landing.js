@@ -97,7 +97,7 @@ const Landing = () => {
 						)}
 					</div>
 					<div className="trailer-container">
-						<div className="ad-trailer-vertical">AD</div>
+						<div className="ad-trailer-vertical"></div>
 						<div className="trailer">
 							<div className="trailer-group">
 								<h3 className="trailer-title">TRAILER</h3>
@@ -110,7 +110,7 @@ const Landing = () => {
 							</div>
 							<div className="ad-horizontal"></div>
 						</div>
-						<div className="ad-trailer-vertical">AD</div>
+						<div className="ad-trailer-vertical"></div>
 					</div>
 				</div>
 			</section>
