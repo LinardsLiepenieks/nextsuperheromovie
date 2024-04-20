@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { formatDate } from "../utils/formatter";
 import { useMetadata } from "../context/MetadataContext";
+import { useMovieContext } from "../context/MovieContext";
 import MovieListItem from "../components/movieListItem";
 import CountdownTimer from "../components/countdown";
 import YoutubeVideo from "../components/youtubeVideo";
 
 const Landing = () => {
-	const [movies, setMovies] = useState([]);
+	const [pageMovies, setPageMovies] = useState([]);
 	const [movie, setMovie] = useState(null);
 	const [selectedPhase, setSelectedPhase] = useState(5);
 	const { setDescription, setKeywords } = useMetadata();
+	const { movies } = useMovieContext();
 
 	const landingRef = useRef(null);
 
@@ -32,6 +34,10 @@ const Landing = () => {
 			behavior: "smooth",
 		});
 	};
+	useEffect(() => {
+		setPageMovies(movies);
+		updateMovie(getCurrentMovie(movies));
+	}, []);
 
 	const getCurrentMovie = (data) => {
 		const today = new Date();
@@ -45,27 +51,6 @@ const Landing = () => {
 
 		return upcomingMovies[0];
 	};
-
-	useEffect(() => {
-		const fetchMovies = async () => {
-			try {
-				const apiUrl = process.env.REACT_APP_API_URL;
-				const response = await fetch(`${apiUrl}api/movies`);
-				const data = await response.json();
-
-				console.log(data);
-
-				if (data.length > 0) {
-					setMovies(data);
-					console.log(response);
-					updateMovie(getCurrentMovie(data));
-				}
-			} catch (error) {
-				console.error("Error fetching /api/movies ", error);
-			}
-		};
-		fetchMovies();
-	}, [updateMovie]);
 
 	/*could separate into component*/
 

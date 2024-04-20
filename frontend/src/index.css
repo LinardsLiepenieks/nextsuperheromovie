@@ -239,7 +239,7 @@ nav .container {
 	justify-content: space-between;
 }
 .movie-list-group {
-	flex-grow: 1;
+	max-width: 100%;
 	margin: 32px auto;
 	color: var(--secondary);
 	font-family: "Roboto Condensed", sans-serif;
@@ -445,12 +445,54 @@ footer {
 	text-decoration: none;
 	border-bottom: 1px solid var(--secondary);
 }
+/* Loading */
+.loading-container {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--accent);
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.loading-dot {
+	width: 20px;
+	height: 20px;
+	margin: 8px 0;
+	background-color: var(--secondary);
+	border-radius: 50%;
+	animation: pulsate 1s infinite alternate;
+}
+
+@keyframes pulsate {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(2);
+	}
+}
 
 @media screen and (max-width: 800px) {
 	:root {
-		font-size: 6px;
-	}
+		font-size: 12px;
 
+		--hero: 15vw;
+	}
+	.movie-list-nav {
+		max-width: 100%;
+		overflow-x: scroll;
+	}
+	.movie-list-nav ul {
+		padding: 4px 0 0 0;
+		max-width: 100%;
+	}
+	.movie-list ul {
+		padding: 0;
+	}
+	.movie-list li {
+		font-size: var(--fs-lg);
+	}
 	.trailer-container {
 		display: flex;
 		flex-direction: column;
