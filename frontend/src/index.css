@@ -228,19 +228,17 @@ nav .container {
 #movies {
 	width: 100%;
 	background: var(--primary);
-	min-height: 720px;
+	min-height: 800px;
 	padding: 72px 40px 40px 40px;
 	box-sizing: border-box;
 }
 #movies .container {
 	max-width: 1400px;
-	margin: 0 auto;
+	margin: 32px auto;
 	display: flex;
-	justify-content: space-between;
 }
 .movie-list-group {
-	max-width: 100%;
-	margin: 32px auto;
+	width: 100%;
 	color: var(--secondary);
 	font-family: "Roboto Condensed", sans-serif;
 }
@@ -249,15 +247,19 @@ nav .container {
 	font-weight: 400;
 	margin: 16px 0;
 }
+.movie-list-nav {
+	width: 100%;
+}
 .movie-list-nav ul {
 	list-style: none;
 	display: flex;
 	padding: 16px 8px;
-	max-width: 100%;
+	width: 100%;
 }
 .movie-list-nav li {
 	font-size: var(--fs-xl);
 	font-weight: 300;
+	text-wrap: nowrap;
 	margin-right: 24px;
 	position: relative;
 }
@@ -359,6 +361,7 @@ footer {
 }
 .footer-content {
 	display: flex;
+	flex-wrap: wrap;
 }
 .logo-container {
 	display: flex;
@@ -483,10 +486,20 @@ footer {
 		max-width: 100%;
 		overflow-x: scroll;
 	}
+	.movie-list-nav::-webkit-scrollbar {
+		background-color: gray;
+		border-radius: 16px;
+		height: 4px;
+	}
+	.movie-list-nav::-webkit-scrollbar-thumb {
+		background: var(--secondary);
+	}
+
 	.movie-list-nav ul {
 		padding: 4px 0 0 0;
-		max-width: 100%;
+		max-width: 50%;
 	}
+
 	.movie-list ul {
 		padding: 0;
 	}
