@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { formatDate } from "../utils/formatter";
 import { useMovieContext } from "../context/MovieContext";
 import { useThemeContext } from "../context/ThemeContext";
@@ -12,7 +12,6 @@ const MoviePage = () => {
 	const [phases, setPhases] = useState(null);
 	const {
 		movies,
-		setMovies,
 		currentMovie,
 		updateMovie,
 		setCurrentMovie,
@@ -30,33 +29,31 @@ const MoviePage = () => {
 		});
 	};
 
-	const filterByFranchise = () => {
-		console.log(hoveredFranchise);
-		if (hoveredFranchise && movies) {
-			const filteredMovies = movies.filter(
-				(movie) => movie.brand === hoveredFranchise
-			);
-			setPageMovies(filteredMovies);
-			console.log(filteredMovies);
-			// Create a new Set to store unique phase values
-			const phaseSet = new Set();
-
-			// Iterate over the filteredMovies array and add each unique phase value to the Set
-			filteredMovies.forEach((movie) => {
-				phaseSet.add(movie.phase);
-			});
-
-			// Convert the Set back to an array to get the unique phase values
-			setPhases(Array.from(phaseSet));
-			console.log(phaseSet);
-		} else {
-			setPageMovies(null);
-		}
-	};
-
 	useEffect(() => {
+		const filterByFranchise = () => {
+			console.log(hoveredFranchise);
+			if (hoveredFranchise && movies) {
+				const filteredMovies = movies.filter(
+					(movie) => movie.brand === hoveredFranchise
+				);
+				setPageMovies(filteredMovies);
+				// Create a new Set to store unique phase values
+				const phaseSet = new Set();
+
+				// Iterate over the filteredMovies array and add each unique phase value to the Set
+				filteredMovies.forEach((movie) => {
+					phaseSet.add(movie.phase);
+				});
+
+				// Convert the Set back to an array to get the unique phase values
+				setPhases(Array.from(phaseSet));
+				console.log(phaseSet);
+			} else {
+				setPageMovies(null);
+			}
+		};
 		filterByFranchise();
-	}, [hoveredFranchise]);
+	}, [hoveredFranchise, movies]);
 	useEffect(() => {
 		if (!hoveredFranchise && currentMovie) {
 			setHoveredFranchise(currentMovie.brand);
@@ -64,12 +61,13 @@ const MoviePage = () => {
 		if (currentMovie) {
 			setSelectedPhase(currentMovie.phase);
 		}
-	}, [currentMovie]);
+		console.log(currentMovie);
+	}, [currentMovie, hoveredFranchise, setHoveredFranchise]);
 	useEffect(() => {
 		if (pageMovies) {
 			setCurrentMovie(getCurrentMovie(pageMovies));
 		}
-	}, [pageMovies]);
+	}, [pageMovies, getCurrentMovie, setCurrentMovie]);
 
 	return (
 		<div className="landing">
