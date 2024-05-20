@@ -19,7 +19,7 @@ const Footer = () => {
 									<a
 										className="contact-icon underline-link-center"
 										href="mailto:linardsliepenieks@gmail.com">
-										<span class=" self-align-center material-symbols-outlined">
+										<span className=" self-align-center material-symbols-outlined">
 											mail
 										</span>{" "}
 										linardsliepenieks@gmail.com
@@ -35,7 +35,7 @@ const Footer = () => {
 								<Link
 									to="/privacy-policy"
 									className="contact-icon underline-link-center">
-									<span class="material-symbols-outlined">visibility</span>
+									<span className="material-symbols-outlined">visibility</span>
 									Privacy Policy
 								</Link>
 							</li>
@@ -43,16 +43,16 @@ const Footer = () => {
 								<Link
 									to="/cookie-policy"
 									className="contact-icon underline-link-center">
-									<span class="material-symbols-outlined">cookie</span> Cookie
-									Policy
+									<span className="material-symbols-outlined">cookie</span>{" "}
+									Cookie Policy
 								</Link>
 							</li>
 							<li className="">
 								<Link
 									to="/terms"
 									className="contact-icon underline-link-center">
-									<span class="material-symbols-outlined">gavel</span> Terms of
-									use
+									<span className="material-symbols-outlined">gavel</span> Terms
+									of use
 								</Link>
 							</li>
 						</ul>

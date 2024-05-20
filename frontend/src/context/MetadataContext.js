@@ -5,7 +5,6 @@ const MetadataContext = createContext();
 export const MetadataProvider = ({ children }) => {
 	const [description, setDescription] = useState("");
 	const [keywords, setKeywords] = useState("");
-
 	return (
 		<MetadataContext.Provider
 			value={{ description, setDescription, keywords, setKeywords }}>

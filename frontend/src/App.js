@@ -2,7 +2,9 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { MetadataProvider } from "./context/MetadataContext";
 import { LoadingProvider, useLoading } from "./context/LoadingContext";
 import { MovieProvider } from "./context/MovieContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/navbar";
+import MoviePage from "./pages/viewMovie";
 import Landing from "./pages/landing";
 import LoadingScreen from "./pages/loadingScreen";
 import Footer from "./components/footer";
@@ -22,8 +24,8 @@ function AppContent() {
 			</header>
 
 			<Routes>
-				<Route path="/" element={<Navigate to="/marvel" />} />
-				<Route path="/marvel" element={<Landing />} />
+				<Route path="/" element={<Landing />} />
+				<Route path="/movie" element={<MoviePage />} />
 				<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 				<Route path="/cookie-policy" element={<CookiePolicy />} />
 				<Route path="/terms" element={<TermsOfUse />} />
@@ -37,13 +39,15 @@ function App() {
 	return (
 		<div className="App">
 			<BrowserRouter>
-				<MetadataProvider>
-					<LoadingProvider>
-						<MovieProvider>
-							<AppContent></AppContent>
-						</MovieProvider>
-					</LoadingProvider>
-				</MetadataProvider>
+				<ThemeProvider>
+					<MetadataProvider>
+						<LoadingProvider>
+							<MovieProvider>
+								<AppContent></AppContent>
+							</MovieProvider>
+						</LoadingProvider>
+					</MetadataProvider>
+				</ThemeProvider>
 			</BrowserRouter>
 		</div>
 	);

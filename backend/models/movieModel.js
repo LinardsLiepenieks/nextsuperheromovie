@@ -13,7 +13,7 @@ const movieSchema = new Schema(
 			required: true,
 		},
 		phase: {
-			type: Number,
+			type: String,
 			required: false,
 		},
 		trailerLink: {

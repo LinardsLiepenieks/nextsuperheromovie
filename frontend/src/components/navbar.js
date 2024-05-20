@@ -16,11 +16,9 @@ const Navbar = () => {
 				<div className="navbar-links">
 					<ul>
 						<li>
-							<button
-								className="nav-link"
-								onClick={() => scrollToSection("landing")}>
+							<Link className="nav-link" to="/">
 								Home
-							</button>
+							</Link>
 						</li>
 						<li>
 							<button
