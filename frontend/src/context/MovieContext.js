@@ -7,16 +7,20 @@ import React, {
 } from "react";
 import { useLoading } from "./LoadingContext";
 import { useMetadata } from "./MetadataContext";
+import { useThemeContext } from "./ThemeContext";
 
 const MovieContext = createContext();
 
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({ children }) => {
-	const [movies, setMovies] = useState(null);
-	const [currentMovie, setCurrentMovie] = useState(null);
+	const [movies, setMovies] = useState(null); // all movies so don't have to re-fetch
+	const [currentMovie, setCurrentMovie] = useState(null); //current diplayed movie
+	const [pageMovies, setPageMovies] = useState(null); //movies for brand filtering
+	const [phases, setPhases] = useState(null); //phases or years
 	const { loading, setLoading } = useLoading();
 	const { setDescription, setKeywords } = useMetadata();
+	const { hoveredFranchise } = useThemeContext();
 
 	const getCurrentMovie = (data) => {
 		const today = new Date();
@@ -30,31 +34,34 @@ export const MovieProvider = ({ children }) => {
 
 		return upcomingMovies[0];
 	};
+	useEffect(() => {
+		const fetchMovies = async () => {
+			try {
+				setLoading(true);
 
-	const fetchMovies = useCallback(async () => {
-		try {
-			setLoading(true);
+				const apiUrl = process.env.REACT_APP_API_URL;
+				const response = await fetch(`${apiUrl}api/movies`);
+				const data = await response.json();
 
-			const apiUrl = process.env.REACT_APP_API_URL;
-			const response = await fetch(`${apiUrl}api/movies`);
-			const data = await response.json();
-
-			if (data.length > 0) {
-				setMovies(data);
-			} else {
+				if (data.length > 0) {
+					setMovies(data);
+				} else {
+					setMovies([]);
+				}
+			} catch (error) {
+				console.error("Error fetching /api/movies ", error);
 				setMovies([]);
+			} finally {
+				setLoading(false);
 			}
-		} catch (error) {
-			console.error("Error fetching /api/movies ", error);
-			setMovies([]);
-		} finally {
-			setLoading(false);
-		}
-	}, [setMovies]);
+		};
+		fetchMovies();
+	}, []);
 
 	const updateMovie = useCallback(
 		(movie) => {
 			if (movie) {
+				console.log("SETTING CURRENT MOVIE");
 				setCurrentMovie(movie);
 				setDescription(movie.title + " out at " + movie.releaseDate);
 				setKeywords(movie.title);
@@ -62,17 +69,37 @@ export const MovieProvider = ({ children }) => {
 		},
 		[setDescription, setKeywords]
 	);
-
-	useEffect(() => {
-		fetchMovies();
-	}, []);
-
 	useEffect(() => {
 		if (movies) {
 			setCurrentMovie(getCurrentMovie(movies));
 			console.log("INITIAL MOVIES", movies);
 		}
 	}, [movies]);
+	useEffect(() => {
+		const filterByFranchise = () => {
+			if (hoveredFranchise && movies) {
+				const filteredMovies = movies.filter(
+					(movie) => movie.brand === hoveredFranchise
+				);
+				setPageMovies(filteredMovies);
+				// Create a new Set to store unique phase values
+				const phaseSet = new Set();
+
+				// Iterate over the filteredMovies array and add each unique phase value to the Set
+				filteredMovies.forEach((movie) => {
+					phaseSet.add(movie.phase);
+				});
+
+				// Convert the Set back to an array to get the unique phase values
+				setPhases(Array.from(phaseSet));
+				console.log(phases);
+			} else {
+				setPageMovies(null);
+			}
+		};
+
+		filterByFranchise();
+	}, [hoveredFranchise]);
 
 	return (
 		<MovieContext.Provider
@@ -82,8 +109,10 @@ export const MovieProvider = ({ children }) => {
 				//loading,
 				currentMovie,
 				updateMovie,
-				setCurrentMovie,
+				phases,
+				pageMovies,
 				getCurrentMovie,
+				setCurrentMovie,
 			}}>
 			{children}
 		</MovieContext.Provider>

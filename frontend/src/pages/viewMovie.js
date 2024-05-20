@@ -8,16 +8,8 @@ import YoutubeVideo from "../components/youtubeVideo";
 
 const MoviePage = () => {
 	const [selectedPhase, setSelectedPhase] = useState();
-	const [pageMovies, setPageMovies] = useState(null);
-	const [phases, setPhases] = useState(null);
-	const {
-		movies,
-		currentMovie,
-		updateMovie,
-		setCurrentMovie,
-		getCurrentMovie,
-	} = useMovieContext();
-	const { hoveredFranchise, setHoveredFranchise } = useThemeContext();
+	const { currentMovie, updateMovie, phases, pageMovies } = useMovieContext();
+	const { hoveredFranchise } = useThemeContext();
 
 	const landingRef = useRef(null);
 
@@ -30,44 +22,10 @@ const MoviePage = () => {
 	};
 
 	useEffect(() => {
-		const filterByFranchise = () => {
-			console.log(hoveredFranchise);
-			if (hoveredFranchise && movies) {
-				const filteredMovies = movies.filter(
-					(movie) => movie.brand === hoveredFranchise
-				);
-				setPageMovies(filteredMovies);
-				// Create a new Set to store unique phase values
-				const phaseSet = new Set();
-
-				// Iterate over the filteredMovies array and add each unique phase value to the Set
-				filteredMovies.forEach((movie) => {
-					phaseSet.add(movie.phase);
-				});
-
-				// Convert the Set back to an array to get the unique phase values
-				setPhases(Array.from(phaseSet));
-				console.log(phaseSet);
-			} else {
-				setPageMovies(null);
-			}
-		};
-		filterByFranchise();
-	}, [hoveredFranchise, movies]);
-	useEffect(() => {
-		if (!hoveredFranchise && currentMovie) {
-			setHoveredFranchise(currentMovie.brand);
-		}
 		if (currentMovie) {
 			setSelectedPhase(currentMovie.phase);
 		}
-		console.log(currentMovie);
-	}, [currentMovie, hoveredFranchise, setHoveredFranchise]);
-	useEffect(() => {
-		if (pageMovies) {
-			setCurrentMovie(getCurrentMovie(pageMovies));
-		}
-	}, [pageMovies, getCurrentMovie, setCurrentMovie]);
+	}, [currentMovie]);
 
 	return (
 		<div className="landing">

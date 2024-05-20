@@ -5,7 +5,7 @@ const Navbar = () => {
 	const scrollToSection = (id) => {
 		const element = document.getElementById(id);
 		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
+			element.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
 	};
 

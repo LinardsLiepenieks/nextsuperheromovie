@@ -48,6 +48,10 @@ export const ThemeProvider = ({ children }) => {
 		changeColor(hoveredFranchise);
 	}, [hoveredFranchise]);
 
+	useEffect(() => {
+		console.log("THEME MOVIE", currentMovie);
+	}, [currentMovie]);
+
 	return (
 		<ThemeContext.Provider
 			value={{

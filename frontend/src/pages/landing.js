@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import backgroundRedDots from "../assets/videos/backgroundRedDots.mp4";
 import { useMovieContext } from "../context/MovieContext";
 import { useThemeContext } from "../context/ThemeContext";
@@ -6,7 +6,7 @@ import CountdownTimer from "../components/countdown";
 import { Link } from "react-router-dom";
 
 const Landing = () => {
-	const { movies, currentMovie, getCurrentMovie, setCurrentMovie } =
+	const { movies, currentMovie, getCurrentMovie, setCurrentMovie, pageMovies } =
 		useMovieContext();
 
 	const { setHoveredFranchise, hueRotateDeg, grayScale } = useThemeContext();
@@ -15,17 +15,15 @@ const Landing = () => {
 		setHoveredFranchise(franchise);
 	};
 
+	const goToBrand = () => {
+		setCurrentMovie(getCurrentMovie(pageMovies));
+	};
+
 	useEffect(() => {
 		if (movies) {
 			setCurrentMovie(getCurrentMovie(movies));
 		}
 	}, []);
-
-	useEffect(() => {
-		if (currentMovie) {
-			setHoveredFranchise(currentMovie.brand);
-		}
-	}, [currentMovie]);
 
 	return (
 		<div>
@@ -81,21 +79,24 @@ const Landing = () => {
 								to="/movie"
 								className="franchise"
 								id="marvel-button"
-								onMouseEnter={() => handleMouseEnter("marvel")}>
+								onMouseEnter={() => handleMouseEnter("marvel")}
+								onClick={() => goToBrand()}>
 								<span>MARVEL</span>
 							</Link>
 							<Link
 								to="/movie"
 								className="franchise"
 								id="dc-button"
-								onMouseEnter={() => handleMouseEnter("dc")}>
+								onMouseEnter={() => handleMouseEnter("dc")}
+								onClick={() => goToBrand()}>
 								<span>DC</span>
 							</Link>
 							<Link
 								to="/movie"
 								className="franchise"
 								id="sony-button"
-								onMouseEnter={() => handleMouseEnter("sony")}>
+								onMouseEnter={() => handleMouseEnter("sony")}
+								onClick={() => goToBrand()}>
 								<span>SONY</span>
 							</Link>
 						</div>
