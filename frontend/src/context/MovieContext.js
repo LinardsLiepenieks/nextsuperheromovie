@@ -18,7 +18,7 @@ export const MovieProvider = ({ children }) => {
 	const [currentMovie, setCurrentMovie] = useState(null); //current diplayed movie
 	const [pageMovies, setPageMovies] = useState(null); //movies for brand filtering
 	const [phases, setPhases] = useState(null); //phases or years
-	const { loading, setLoading } = useLoading();
+	const { setLoading } = useLoading();
 	const { setDescription, setKeywords } = useMetadata();
 	const { hoveredFranchise } = useThemeContext();
 
@@ -56,7 +56,7 @@ export const MovieProvider = ({ children }) => {
 			}
 		};
 		fetchMovies();
-	}, []);
+	}, [setLoading]);
 
 	const updateMovie = useCallback(
 		(movie) => {
@@ -92,14 +92,13 @@ export const MovieProvider = ({ children }) => {
 
 				// Convert the Set back to an array to get the unique phase values
 				setPhases(Array.from(phaseSet));
-				console.log(phases);
 			} else {
 				setPageMovies(null);
 			}
 		};
 
 		filterByFranchise();
-	}, [hoveredFranchise]);
+	}, [hoveredFranchise, movies]);
 
 	return (
 		<MovieContext.Provider

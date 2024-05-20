@@ -23,7 +23,13 @@ const Landing = () => {
 		if (movies) {
 			setCurrentMovie(getCurrentMovie(movies));
 		}
-	}, []);
+	}, [getCurrentMovie, setCurrentMovie, movies]);
+
+	useEffect(() => {
+		if (currentMovie) {
+			setHoveredFranchise(currentMovie.brand);
+		}
+	}, [currentMovie, setHoveredFranchise]);
 
 	return (
 		<div>
