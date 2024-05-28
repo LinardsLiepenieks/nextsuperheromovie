@@ -134,7 +134,7 @@ nav .container {
 @media screen and (max-width: 2000px) {
 	.landing-movie-title {
 		white-space: normal !important;
-		height: initial;
+		height: initial !important;
 	}
 }
 .landing-movie .page-title {
