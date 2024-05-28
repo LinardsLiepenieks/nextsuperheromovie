@@ -28,12 +28,8 @@ const MoviePage = () => {
 			landingRef.current.scrollIntoView({
 				behavior: "smooth",
 			});
-		} else {
-			if (pageMovies) {
-				updateMovie(getCurrentMovie(pageMovies));
-			}
 		}
-	}, [currentMovie, pageMovies]);
+	}, [currentMovie]);
 
 	return (
 		<div className="landing">

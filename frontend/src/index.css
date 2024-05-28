@@ -598,6 +598,7 @@ footer {
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
+	position: relative;
 	transform: rotateX(-12deg) rotateY(24deg) rotateZ(0);
 	margin: 32px 0 128px 0;
 }
@@ -612,6 +613,10 @@ footer {
 	white-space: nowrap;
 	-webkit-text-stroke: 4px var(--accent);
 	transition: 0.4s all ease;
+	height: calc(var(--hero) * 3.3);
+	display: flex;
+	align-items: center;
+	overflow: hidden;
 }
 
 .go-to-link {

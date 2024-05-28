@@ -74,14 +74,14 @@ export const MovieProvider = ({ children }) => {
 
 	useEffect(() => {
 		const filterByFranchise = () => {
-			if (!hoveredFranchise) {
-				setHoveredFranchise(location.pathname.slice(1));
-			}
+			setHoveredFranchise(location.pathname.slice(1));
+
 			if (hoveredFranchise && movies && movies.length > 0) {
 				const filteredMovies = movies.filter(
 					(movie) => movie.brand === hoveredFranchise
 				);
 				setPageMovies(filteredMovies);
+				console.log();
 				// Create a new Set to store unique phase values
 				const phaseSet = new Set();
 
@@ -92,10 +92,11 @@ export const MovieProvider = ({ children }) => {
 
 				// Convert the Set back to an array to get the unique phase values
 				setPhases(Array.from(phaseSet));
+				setCurrentMovie(getCurrentMovie(filteredMovies));
 			}
 		};
 		filterByFranchise();
-	}, [hoveredFranchise, setHoveredFranchise, movies]);
+	}, [hoveredFranchise, setHoveredFranchise, movies, location.pathname]);
 
 	return (
 		<MovieContext.Provider
