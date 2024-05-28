@@ -52,9 +52,12 @@ const Landing = () => {
 					<div className="landing-container container">
 						{currentMovie ? (
 							<div className="content">
-								<h1 className="page-title">
+								<h1>
 									<span>NEXT SUPERHERO MOVIE: &nbsp;</span>
-									<span>{currentMovie.title}</span>
+									<span className="landing-movie-title">
+										{currentMovie.title}
+									</span>
+									<div className="brand">({currentMovie.brand})</div>
 								</h1>
 								<h2>
 									<CountdownTimer

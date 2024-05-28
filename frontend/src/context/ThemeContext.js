@@ -27,7 +27,10 @@ export const ThemeProvider = ({ children }) => {
 				case "dc":
 					document.documentElement.style.setProperty("--accent", "#263f75");
 					document.documentElement.style.setProperty("--secondary", "#f6f7ff");
-					document.documentElement.style.setProperty("--title-color", "#fff");
+					document.documentElement.style.setProperty(
+						"--title-color",
+						"#ffd100"
+					);
 
 					setHueRotateDeg(220);
 					setGrayscale(0);
@@ -35,7 +38,10 @@ export const ThemeProvider = ({ children }) => {
 					break;
 				case "sony":
 					document.documentElement.style.setProperty("--accent", "#343a47");
-					document.documentElement.style.setProperty("--title-color", "#fff");
+					document.documentElement.style.setProperty(
+						"--title-color",
+						"#823bc2"
+					);
 
 					setGrayscale(1);
 					setHueRotateDeg(135);

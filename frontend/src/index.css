@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 :root {
 	--primary: #000000;
@@ -23,7 +23,8 @@ body {
 	margin: 0;
 	text-rendering: optimizeLegibility;
 	background-color: var(--primary);
-	font-family: "Roboto Condensed", sans-serif;
+	font-family: "Oswald", sans-serif;
+	font-optical-sizing: auto;
 }
 .underline-link-center {
 	position: relative;
@@ -127,8 +128,13 @@ nav .container {
 	margin: 0 auto;
 }
 .landing-movie {
-	font-family: "Roboto Condensed", sans-serif;
+	font-family: "Oswald", sans-serif;
 	margin: 40px 0;
+}
+@media screen and (max-width: 2000px) {
+	.landing-movie-title {
+		white-space: normal !important;
+	}
 }
 .landing-movie .page-title {
 	color: var(--secondary);
@@ -244,7 +250,7 @@ nav .container {
 .movie-list-group {
 	width: 100%;
 	color: var(--secondary);
-	font-family: "Roboto Condensed", sans-serif;
+	font-family: "Oswald", sans-serif;
 }
 .movie-list-group h2 {
 	font-size: var(--title);
@@ -288,6 +294,7 @@ nav .container {
 	list-style: none;
 	letter-spacing: 1px;
 	font-weight: 300;
+	font-family: "Roboto Condensed", sans-serif;
 }
 .movie-list li {
 	font-size: var(--fs-xxl);
@@ -481,7 +488,7 @@ footer {
 	}
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
 	:root {
 		font-size: 12px;
 
@@ -531,6 +538,10 @@ footer {
 		max-width: 100%; /* Allow the video container to fill the available width */
 		margin-bottom: 20px; /* Add some spacing between trailer and other elements */
 	}
+	.landing-movie-title {
+		font-size: var(--hero) !important;
+		-webkit-text-stroke: var(--accent) 2px !important;
+	}
 }
 
 /*actual landing*/
@@ -551,10 +562,10 @@ footer {
 	z-index: 1;
 }
 #landing-page .container {
-	max-width: 800px;
+	max-width: 1400px;
 	width: 100%;
 	margin: 0 auto;
-	padding: 132px 64px 96px 64px;
+	padding: 164px 80px 96px 80px;
 }
 
 #landing-page {
@@ -583,13 +594,24 @@ footer {
 	color: var(--secondary);
 	font-size: var(--fs-xxxl);
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: flex-start;
+	transform: rotateX(-12deg) rotateY(24deg) rotateZ(0);
+	margin: 32px 0 128px 0;
 }
-.landing-container h1 span {
-	margin: 4px 0;
-	word-wrap: break-word;
-	white-space: normal;
+.landing-container h1 .brand {
+	width: 100%;
+	text-align: right;
+	text-transform: uppercase;
 }
+
+.landing-movie-title {
+	font-size: calc(var(--hero) * 1.3);
+	white-space: nowrap;
+	-webkit-text-stroke: 4px var(--accent);
+	transition: 0.4s all ease;
+}
+
 .go-to-link {
 	color: var(--secondary);
 	text-decoration: none;
@@ -618,15 +640,17 @@ footer {
 
 .landing-container h2 {
 	color: var(--secondary);
-	font-size: var(--fs-xxl);
+	font-size: var(--fs-xxxxl);
 	font-weight: 500;
 	letter-spacing: 1px;
+	transition: all 0.4s ease;
 }
 .landing-container h3 {
 	color: var(--secondary);
-	font-size: var(--fs-xxxl);
+	font-size: var(--fs-xxxxl);
 	display: inline;
 	border-bottom: 2px solid var(--secondary);
+	font-family: "Roboto Condensed", sans-serif;
 }
 .landing-container h3 span {
 	font-size: var(--fs-xxl);
@@ -670,6 +694,7 @@ footer {
 	position: relative;
 	text-decoration: none;
 	display: block;
+	font-family: "Roboto Condensed", sans-serif;
 }
 .franchise span {
 	position: relative;
