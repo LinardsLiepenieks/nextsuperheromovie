@@ -61,7 +61,7 @@ const Landing = () => {
 								</h2>
 								<h3>
 									<Link
-										to="/movie"
+										to={`/${currentMovie.brand}`}
 										className="go-to-link"
 										onMouseEnter={() => handleMouseEnter(currentMovie.brand)}>
 										Go to movie{" "}
