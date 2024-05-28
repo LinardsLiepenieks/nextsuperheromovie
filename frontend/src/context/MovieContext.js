@@ -98,6 +98,12 @@ export const MovieProvider = ({ children }) => {
 		filterByFranchise();
 	}, [hoveredFranchise, setHoveredFranchise, movies, location.pathname]);
 
+	useEffect(() => {
+		if (currentMovie) {
+			setHoveredFranchise(currentMovie.brand);
+		}
+	}, [currentMovie]);
+
 	return (
 		<MovieContext.Provider
 			value={{
