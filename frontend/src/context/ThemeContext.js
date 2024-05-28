@@ -1,5 +1,4 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { useMovieContext } from "./MovieContext";
 
 const ThemeContext = createContext();
 
@@ -10,10 +9,9 @@ export const ThemeProvider = ({ children }) => {
 	const [grayScale, setGrayscale] = useState(0);
 	const [hoveredFranchise, setHoveredFranchise] = useState(null);
 
-	const { currentMovie } = useMovieContext;
-
 	useEffect(() => {
 		const changeColor = (franchise) => {
+			console.log("SETTING", franchise);
 			switch (franchise) {
 				case "marvel":
 					document.documentElement.style.setProperty("--accent", "#ed1d24");
@@ -53,10 +51,6 @@ export const ThemeProvider = ({ children }) => {
 		};
 		changeColor(hoveredFranchise);
 	}, [hoveredFranchise]);
-
-	useEffect(() => {
-		console.log("THEME MOVIE", currentMovie);
-	}, [currentMovie]);
 
 	return (
 		<ThemeContext.Provider

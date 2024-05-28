@@ -21,15 +21,11 @@ const Landing = () => {
 
 	useEffect(() => {
 		if (movies) {
-			setCurrentMovie(getCurrentMovie(movies));
+			let m = getCurrentMovie(movies);
+			setHoveredFranchise(m.brand);
+			setCurrentMovie(m);
 		}
-	}, [getCurrentMovie, setCurrentMovie, movies]);
-
-	useEffect(() => {
-		if (currentMovie) {
-			setHoveredFranchise(currentMovie.brand);
-		}
-	}, [currentMovie, setHoveredFranchise]);
+	}, [movies]);
 
 	return (
 		<div>
@@ -85,7 +81,7 @@ const Landing = () => {
 						<h2>Cinematic Universes:</h2>
 						<div className="franchise-container">
 							<Link
-								to="/movie"
+								to="/marvel"
 								className="franchise"
 								id="marvel-button"
 								onMouseEnter={() => handleMouseEnter("marvel")}
@@ -93,7 +89,7 @@ const Landing = () => {
 								<span>MARVEL</span>
 							</Link>
 							<Link
-								to="/movie"
+								to="/dc"
 								className="franchise"
 								id="dc-button"
 								onMouseEnter={() => handleMouseEnter("dc")}
@@ -101,7 +97,7 @@ const Landing = () => {
 								<span>DC</span>
 							</Link>
 							<Link
-								to="/movie"
+								to="/sony"
 								className="franchise"
 								id="sony-button"
 								onMouseEnter={() => handleMouseEnter("sony")}

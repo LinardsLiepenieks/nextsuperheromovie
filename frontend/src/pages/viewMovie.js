@@ -8,7 +8,8 @@ import YoutubeVideo from "../components/youtubeVideo";
 
 const MoviePage = () => {
 	const [selectedPhase, setSelectedPhase] = useState();
-	const { currentMovie, updateMovie, phases, pageMovies } = useMovieContext();
+	const { currentMovie, updateMovie, phases, pageMovies, getCurrentMovie } =
+		useMovieContext();
 	const { hoveredFranchise } = useThemeContext();
 
 	const landingRef = useRef(null);
@@ -24,8 +25,15 @@ const MoviePage = () => {
 	useEffect(() => {
 		if (currentMovie) {
 			setSelectedPhase(currentMovie.phase);
+			landingRef.current.scrollIntoView({
+				behavior: "smooth",
+			});
+		} else {
+			if (pageMovies) {
+				updateMovie(getCurrentMovie(pageMovies));
+			}
 		}
-	}, [currentMovie]);
+	}, [currentMovie, pageMovies]);
 
 	return (
 		<div className="landing">

@@ -25,7 +25,9 @@ function AppContent() {
 
 			<Routes>
 				<Route path="/" element={<Landing />} />
-				<Route path="/movie" element={<MoviePage />} />
+				<Route path="/marvel" element={<MoviePage />} />
+				<Route path="/dc" element={<MoviePage />} />
+				<Route path="/sony" element={<MoviePage />} />
 				<Route path="/privacy-policy" element={<PrivacyPolicy />} />
 				<Route path="/cookie-policy" element={<CookiePolicy />} />
 				<Route path="/terms" element={<TermsOfUse />} />

@@ -8,6 +8,7 @@ import React, {
 import { useLoading } from "./LoadingContext";
 import { useMetadata } from "./MetadataContext";
 import { useThemeContext } from "./ThemeContext";
+import { useLocation } from "react-router-dom";
 
 const MovieContext = createContext();
 
@@ -20,7 +21,9 @@ export const MovieProvider = ({ children }) => {
 	const [phases, setPhases] = useState(null); //phases or years
 	const { setLoading } = useLoading();
 	const { setDescription, setKeywords } = useMetadata();
-	const { hoveredFranchise } = useThemeContext();
+	const { hoveredFranchise, setHoveredFranchise } = useThemeContext();
+
+	const location = useLocation();
 
 	const getCurrentMovie = (data) => {
 		const today = new Date();
@@ -61,7 +64,6 @@ export const MovieProvider = ({ children }) => {
 	const updateMovie = useCallback(
 		(movie) => {
 			if (movie) {
-				console.log("SETTING CURRENT MOVIE");
 				setCurrentMovie(movie);
 				setDescription(movie.title + " out at " + movie.releaseDate);
 				setKeywords(movie.title);
@@ -69,15 +71,13 @@ export const MovieProvider = ({ children }) => {
 		},
 		[setDescription, setKeywords]
 	);
-	useEffect(() => {
-		if (movies) {
-			setCurrentMovie(getCurrentMovie(movies));
-			console.log("INITIAL MOVIES", movies);
-		}
-	}, [movies]);
+
 	useEffect(() => {
 		const filterByFranchise = () => {
-			if (hoveredFranchise && movies) {
+			if (!hoveredFranchise) {
+				setHoveredFranchise(location.pathname.slice(1));
+			}
+			if (hoveredFranchise && movies && movies.length > 0) {
 				const filteredMovies = movies.filter(
 					(movie) => movie.brand === hoveredFranchise
 				);
@@ -92,13 +92,10 @@ export const MovieProvider = ({ children }) => {
 
 				// Convert the Set back to an array to get the unique phase values
 				setPhases(Array.from(phaseSet));
-			} else {
-				setPageMovies(null);
 			}
 		};
-
 		filterByFranchise();
-	}, [hoveredFranchise, movies]);
+	}, [hoveredFranchise, setHoveredFranchise, movies]);
 
 	return (
 		<MovieContext.Provider

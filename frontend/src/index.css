@@ -591,11 +591,13 @@ footer {
 	z-index: 4;
 }
 .landing-container h1 {
+	box-sizing: border-box;
 	color: var(--secondary);
 	font-size: var(--fs-xxxl);
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	justify-content: center;
 	transform: rotateX(-12deg) rotateY(24deg) rotateZ(0);
 	margin: 32px 0 128px 0;
 }
