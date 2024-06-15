@@ -17,6 +17,9 @@ const Landing = () => {
 		},
 		[setHoveredFranchise]
 	);
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	const goToBrand = () => {
 		setCurrentMovie(getCurrentMovie(pageMovies));
@@ -57,24 +60,34 @@ const Landing = () => {
 										<span className="landing-movie-title">
 											{currentMovie.title}
 										</span>
-										<div className="brand">({currentMovie.brand})</div>
+										<div className="title-under">
+											<div className="title-under-timer-brand">
+												<h2>
+													<CountdownTimer
+														releaseDate={
+															currentMovie.releaseDate
+														}></CountdownTimer>
+												</h2>
+												<span className="brand">({currentMovie.brand})</span>
+											</div>
+											<div>
+												<h3>
+													<Link
+														to={`/${currentMovie.brand}`}
+														className="go-to-link"
+														onMouseEnter={() =>
+															handleMouseEnter(currentMovie.brand)
+														}>
+														Go to movie{" "}
+														<span className="material-symbols-outlined">
+															keyboard_double_arrow_right
+														</span>
+													</Link>
+												</h3>
+											</div>
+										</div>
 									</div>
 								</h1>
-								<h2>
-									<CountdownTimer
-										releaseDate={currentMovie.releaseDate}></CountdownTimer>
-								</h2>
-								<h3>
-									<Link
-										to={`/${currentMovie.brand}`}
-										className="go-to-link"
-										onMouseEnter={() => handleMouseEnter(currentMovie.brand)}>
-										Go to movie{" "}
-										<span className="material-symbols-outlined">
-											keyboard_double_arrow_right
-										</span>
-									</Link>
-								</h3>
 							</div>
 						) : (
 							<h2>No upcoming movies</h2>

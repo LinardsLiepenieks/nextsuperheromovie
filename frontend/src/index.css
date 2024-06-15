@@ -121,7 +121,7 @@ nav .container {
 #landing {
 	background: var(--accent);
 	min-height: 960px;
-	padding: 72px 40px 40px 40px;
+	padding: 80px 40px 40px 40px;
 }
 #landing .container {
 	max-width: 1400px;
@@ -132,6 +132,9 @@ nav .container {
 	margin: 40px 0;
 }
 @media screen and (max-width: 2000px) {
+	.title-under {
+		flex-direction: column;
+	}
 	.landing-movie-title {
 		white-space: normal !important;
 		height: initial !important;
@@ -305,6 +308,26 @@ nav .container {
 	opacity: 1;
 	animation: fadeInAndFloat 0.4s ease; /* Apply the animation */
 }
+.active-list-movie {
+	position: relative;
+	z-index: 0;
+	transition: all 0.4s ease;
+}
+
+.active-list-movie::before {
+	content: "";
+	position: absolute;
+	left: -2%;
+	width: 104%;
+	height: 100%;
+	filter: blur(16px);
+	opacity: 0.6;
+	border-radius: 8px;
+	background-color: var(--accent);
+	z-index: -1;
+	transition: 0.4s all ease;
+}
+
 .movie-list .released {
 	opacity: 0.6;
 	animation: fadeInAndFloatReleased 0.4s ease; /* Apply the animation */
@@ -490,14 +513,50 @@ footer {
 }
 
 @media screen and (max-width: 1000px) {
+	#landing-page .container {
+		padding: 0 40px 80px 40px !important;
+	}
+	.landing-franchises .container {
+		padding: 0 40px 80px 40px !important;
+	}
+	.franchise-container {
+		padding: 0 !important;
+	}
 	:root {
 		font-size: 12px;
 
 		--hero: 15vw;
 	}
+	.title-under-timer-brand {
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		text-align: left;
+		flex-direction: column-reverse;
+	}
+	.brand {
+		margin-bottom: 16px;
+	}
 	.movie-list-nav {
 		max-width: 100%;
 		overflow-x: scroll;
+	}
+	.viewMovies {
+		padding: 0 40px 80px 40px !important;
+		min-height: 0;
+	}
+	.landing-movie {
+		margin: 20px 0 40px 0;
+	}
+	.landing-movie-info {
+		padding: 0;
+		margin: 8px 0;
+	}
+	.movie-date {
+		margin: 0 !important;
+	}
+	.movie-countdown {
+		font-size: var(--fs-xxxl) !important;
 	}
 	.movie-list-nav::-webkit-scrollbar {
 		background-color: gray;
@@ -595,20 +654,21 @@ footer {
 	box-sizing: border-box;
 	color: var(--secondary);
 	font-size: var(--fs-xxxl);
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
-	position: relative;
-	/*transform: rotateX(-12deg) rotateY(24deg) rotateZ(0);*/
-	margin: 80px 0 0 0;
+	margin: 96px 0 0 0;
 }
-.landing-container h1 > div {
-	transform: skew(-5deg, -4deg);
+
+.title-under-timer-brand {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 16px;
+}
+.title-under-timer-brand > h2 {
+	margin: 0;
+	display: inline-block;
 }
 .landing-container h1 .brand {
-	width: 100%;
-	text-align: right;
+	display: inline;
+	text-align: center;
 	text-transform: uppercase;
 }
 
@@ -654,6 +714,7 @@ footer {
 	font-size: var(--fs-xxxxl);
 	font-weight: 500;
 	letter-spacing: 1px;
+	margin-top: 0;
 	transition: all 0.4s ease;
 }
 .landing-container h3 {

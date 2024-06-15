@@ -109,13 +109,14 @@ const MoviePage = () => {
 
 										.sort(
 											(a, b) =>
-												new Date(a.releaseDate) - new Date(b.releaseDate)
+												new Date(a.releaseDate) + new Date(b.releaseDate)
 										)
-										.map((currentMovie) => (
+										.map((movie) => (
 											<MovieListItem
-												key={currentMovie._id}
-												movie={currentMovie}
-												onClick={() => changeMovie(currentMovie)}
+												key={movie._id}
+												movie={movie}
+												isActive={movie._id === currentMovie._id}
+												onClick={() => changeMovie(movie)}
 											/>
 										))
 								) : (
