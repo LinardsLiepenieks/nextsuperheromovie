@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import backgroundRedDots from "../assets/videos/backgroundRedDots.mp4";
 import { useMovieContext } from "../context/MovieContext";
 import { useThemeContext } from "../context/ThemeContext";
@@ -11,21 +11,24 @@ const Landing = () => {
 
 	const { setHoveredFranchise, hueRotateDeg, grayScale } = useThemeContext();
 
-	const handleMouseEnter = (franchise) => {
-		setHoveredFranchise(franchise);
-	};
+	const handleMouseEnter = useCallback(
+		(franchise) => {
+			setHoveredFranchise(franchise);
+		},
+		[setHoveredFranchise]
+	);
 
 	const goToBrand = () => {
 		setCurrentMovie(getCurrentMovie(pageMovies));
 	};
 
 	useEffect(() => {
-		if (movies) {
-			let m = getCurrentMovie(movies);
-			setHoveredFranchise(m.brand);
-			setCurrentMovie(m);
+		if (movies && movies.length > 0) {
+			const movie = getCurrentMovie(movies);
+			setHoveredFranchise(movie.brand);
+			setCurrentMovie(movie);
 		}
-	}, [movies]);
+	}, [movies, setCurrentMovie, setHoveredFranchise, getCurrentMovie]);
 
 	return (
 		<div>

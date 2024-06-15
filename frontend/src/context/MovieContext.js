@@ -22,10 +22,12 @@ export const MovieProvider = ({ children }) => {
 	const { setLoading } = useLoading();
 	const { setDescription, setKeywords } = useMetadata();
 	const { hoveredFranchise, setHoveredFranchise } = useThemeContext();
+	const apiUrl = process.env.REACT_APP_API_URL;
 
 	const location = useLocation();
 
-	const getCurrentMovie = (data) => {
+	//filters and sets current movie
+	const getCurrentMovie = useCallback((data) => {
 		const today = new Date();
 		const upcomingMovies = data.filter(
 			(movie) => new Date(movie.releaseDate) > today
@@ -36,30 +38,33 @@ export const MovieProvider = ({ children }) => {
 		);
 
 		return upcomingMovies[0];
-	};
-	useEffect(() => {
-		const fetchMovies = async () => {
-			try {
-				setLoading(true);
+	}, []);
+	//fetches movies from api
+	const fetchMovies = useCallback(async () => {
+		try {
+			setLoading(true);
+			const response = await fetch(`${apiUrl}api/movies`);
 
-				const apiUrl = process.env.REACT_APP_API_URL;
-				const response = await fetch(`${apiUrl}api/movies`);
-				const data = await response.json();
+			const data = await response.json();
 
-				if (data.length > 0) {
-					setMovies(data);
-				} else {
-					setMovies([]);
-				}
-			} catch (error) {
-				console.error("Error fetching /api/movies ", error);
+			if (data.length > 0) {
+				setMovies(data);
+			} else {
 				setMovies([]);
-			} finally {
-				setLoading(false);
 			}
-		};
+		} catch (error) {
+			console.error("Error fetching /api/movies ", error);
+			setMovies([]);
+			// Display an error message or handle the error in a user-friendly way
+		} finally {
+			setLoading(false);
+		}
+	}, [apiUrl, setLoading]);
+
+	//fetches all movies from db
+	useEffect(() => {
 		fetchMovies();
-	}, [setLoading]);
+	}, [fetchMovies]);
 
 	const updateMovie = useCallback(
 		(movie) => {
@@ -81,7 +86,6 @@ export const MovieProvider = ({ children }) => {
 					(movie) => movie.brand === hoveredFranchise
 				);
 				setPageMovies(filteredMovies);
-				console.log();
 				// Create a new Set to store unique phase values
 				const phaseSet = new Set();
 
@@ -96,13 +100,19 @@ export const MovieProvider = ({ children }) => {
 			}
 		};
 		filterByFranchise();
-	}, [hoveredFranchise, setHoveredFranchise, movies, location.pathname]);
+	}, [
+		hoveredFranchise,
+		setHoveredFranchise,
+		movies,
+		location.pathname,
+		getCurrentMovie,
+	]);
 
 	useEffect(() => {
 		if (currentMovie) {
 			setHoveredFranchise(currentMovie.brand);
 		}
-	}, [currentMovie]);
+	}, [currentMovie, setHoveredFranchise]);
 
 	return (
 		<MovieContext.Provider
