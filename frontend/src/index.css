@@ -3,6 +3,7 @@
 :root {
 	--primary: #000000;
 	--title-color: #000000;
+	--effect-color: #ed1d24;
 	--secondary: #fff;
 	--accent: #ed1d24;
 
@@ -323,7 +324,7 @@ nav .container {
 	filter: blur(16px);
 	opacity: 0.6;
 	border-radius: 8px;
-	background-color: var(--accent);
+	background-color: var(--effect-color);
 	z-index: -1;
 	transition: 0.4s all ease;
 }
@@ -576,7 +577,11 @@ footer {
 		padding: 0;
 	}
 	.movie-list li {
-		font-size: var(--fs-lg);
+		font-size: var(--fs-xl);
+	}
+	.movie-list .movie::after {
+		height: 1px;
+		opacity: 0.6;
 	}
 	.trailer-container {
 		display: flex;
