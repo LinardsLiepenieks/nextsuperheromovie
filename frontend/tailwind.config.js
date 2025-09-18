@@ -23,9 +23,9 @@ module.exports = {
         base: 'var(--fs-md)', // text-base
       },
       colors: {
-        primary: 'var(--primary)',
-        secondary: 'var(--secondary)',
-        accent: 'var(--accent)',
+        primary: 'rgb(from var(--primary) r g b / <alpha-value>)',
+        secondary: 'rgb(from var(--secondary) r g b / <alpha-value>)',
+        accent: 'rgb(from var(--accent) r g b / <alpha-value>)',
       },
     },
   },

@@ -27,9 +27,17 @@ const linkStyles = cva(['font-roboto-condensed'], {
         'hover:after:left-0',
         'hover:after:w-full',
       ],
+      franchise: [
+        'text-secondary/70',
+        'hover:text-secondary',
+        'transition-colors',
+        'duration-150',
+      ],
+      'franchise-active': ['text-secondary'],
     },
     size: {
       lg: ['text-lg', 'px-1'],
+      '4xl': ['text-4xl'],
     },
   },
   defaultVariants: {
