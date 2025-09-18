@@ -1,14 +1,8 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import NavLink from './ui/NavLink';
 
 const Navbar = () => {
-  const location = useLocation();
-
-  const isHomePage = location.pathname === '/';
-
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
-    console.log('SCROLL');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -16,28 +10,34 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="container !bg-blue-500">
-        <div className="!bg-blue-500 !text-red-500">NM</div>
-        <div className="navbar-links">
-          {/* Conditionally render the ul element and its content */}
-          {!isHomePage && (
-            <ul>
-              <li>
-                <Link className="nav-link" to="/">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <button
-                  className="nav-link"
-                  onClick={() => scrollToSection('movies')}
-                >
-                  Movies
-                </button>
-              </li>
-            </ul>
-          )}
-        </div>
+      <div className="flex justify-between py-6 px-12">
+        <div className="">NM</div>
+        <ul className="flex gap-8">
+          <li>
+            <NavLink to="/marvel" variant="navbar" size="lg">
+              Marvel
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/dc" variant="navbar" size="lg">
+              DC
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/sony" variant="navbar" size="lg">
+              SONY
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={() => scrollToSection('movies')}
+              variant="navbar"
+              size="lg"
+            >
+              Movies
+            </NavLink>
+          </li>
+        </ul>
       </div>
     </nav>
   );
