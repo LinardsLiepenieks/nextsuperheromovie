@@ -1,0 +1,23 @@
+const PhaseSelector = ({ phases, selectedPhase, onPhaseSelect }) => {
+  if (!phases) {
+    return <span></span>;
+  }
+
+  return (
+    <ul className="w-full flex gap-8 py-2">
+      {phases.map((phase) => (
+        <li
+          key={phase}
+          onClick={() => onPhaseSelect(phase)}
+          className={`text-3xl cursor-pointer hover:text-secondary animation-colors duration-300 ${
+            selectedPhase === phase ? 'text-secondary' : 'text-secondary/70'
+          }`}
+        >
+          {phase}
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default PhaseSelector;

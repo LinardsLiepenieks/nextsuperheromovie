@@ -6,11 +6,13 @@ const MovieTrailer = ({ movie }) => {
       <div className="ad-trailer-vertical"></div>
       <div>
         <div>
-          <h3 className="text-secondary text-4xl mb-px -ml-1">TRAILER</h3>
           {movie && (
-            <div className="aspect-16/9">
-              <YoutubeVideo trailerLink={movie.trailerLink} />
-            </div>
+            <>
+              <h3 className="text-secondary text-4xl mb-px -ml-1">TRAILER</h3>
+              <div className="aspect-16/9">
+                <YoutubeVideo trailerLink={movie.trailerLink} />
+              </div>
+            </>
           )}
         </div>
         <div className="ad-horizontal"></div>
