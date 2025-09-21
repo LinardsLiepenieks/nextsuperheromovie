@@ -7,7 +7,7 @@ const NextMovieDisplay = ({ movie }) => {
   }
 
   return (
-    <div>
+    <div className="will-change-contents">
       <div className="pt-12 pb-16 ml-8">
         <h2 className="text-hero text-primary uppercase font-medium  tracking-wide leading-none -ml-2.5 drop-shadow-lg">
           {movie.title}

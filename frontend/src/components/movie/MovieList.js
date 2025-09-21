@@ -56,7 +56,7 @@ const MovieList = ({ movies, selectedPhase, currentMovieId, onMovieClick }) => {
 
   return (
     <div
-      className="overflow-hidden transition-all duration-300 ease-in-out"
+      className="overflow-hidden transition-all duration-300 ease-in-out will-change-contents"
       style={{ height: height === 'auto' ? 'auto' : `${height}px` }}
     >
       <ul
