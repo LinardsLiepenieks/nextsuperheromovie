@@ -70,7 +70,9 @@ const MovieList = ({ movies, selectedPhase, currentMovieId, onMovieClick }) => {
             key={movie._id}
             movie={movie}
             isActive={movie._id === currentMovieId}
-            onClick={() => onMovieClick(movie)}
+            onClick={() => {
+              onMovieClick(movie);
+            }}
           />
         ))}
       </ul>

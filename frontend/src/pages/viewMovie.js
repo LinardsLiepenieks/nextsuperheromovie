@@ -20,8 +20,8 @@ const MoviePage = () => {
   }, [currentMovie?.phase]);
 
   const handleMovieClick = (movie) => {
-    // Add your movie click logic here
     updateMovie(movie);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -42,7 +42,10 @@ const MoviePage = () => {
         </div>
       </section>
 
-      <section id="movies" className="bg-primary font-roboto-condensed pt-12">
+      <section
+        id="movies"
+        className="bg-primary font-roboto-condensed pt-12 pb-12"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-secondary">
             <h2 className="text-title-lg font-medium tracking-wide pb-1">
@@ -61,7 +64,6 @@ const MoviePage = () => {
               onMovieClick={handleMovieClick}
             />
           </div>
-          <div className="ad-vertical"></div>
         </div>
       </section>
     </main>
