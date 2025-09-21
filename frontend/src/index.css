@@ -23,6 +23,7 @@
 
 body {
   margin: 0;
+  background-color: var(--primary);
   text-rendering: optimizeLegibility;
   font-family: 'Oswald', sans-serif;
   font-optical-sizing: auto;

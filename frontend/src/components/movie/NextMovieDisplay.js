@@ -1,5 +1,5 @@
 import { formatDate } from '../../utils/formatter';
-import CountdownTimer from '../countdown';
+import CountdownTimer from './Countdown';
 
 const NextMovieDisplay = ({ movie }) => {
   if (!movie) {
