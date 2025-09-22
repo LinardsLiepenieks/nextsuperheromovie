@@ -9,10 +9,10 @@ const NextMovieDisplay = ({ movie }) => {
   return (
     <div className="will-change-contents">
       <div className="pt-12 pb-16 ml-8">
-        <h2 className="text-hero  text-title-color uppercase font-medium  tracking-wide leading-none -ml-2.5 drop-shadow-lg mb-6 transition-colors duration-150 ease">
+        <h2 className="text-hero-sm  text-title-color uppercase font-medium  tracking-wide leading-none -ml-2.5 drop-shadow-lg mb-6 transition-colors duration-150 ease">
           {movie.title}
         </h2>
-        <div className="text-3xl drops-shadow-sm">
+        <div className="text-3xl drop-shadow-sm">
           {movie.releaseDate === 0 ? (
             <span>TBA</span>
           ) : (

@@ -21,6 +21,7 @@ export const ThemeProvider = ({ children }) => {
     <ThemeContext.Provider
       value={{
         setCurrentFranchise,
+        currentFranchise,
       }}
     >
       {children}

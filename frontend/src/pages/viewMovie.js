@@ -28,7 +28,7 @@ const MoviePage = () => {
   return (
     <main>
       <section className="bg-accent pt-16 transition-colors duration-150 ease">
-        <div className="max-w-7xl mx-auto py-12">
+        <div className="max-w-6xl mx-auto py-12">
           <div className="font-roboto-condensed mb-12">
             <div>
               <FranchiseNavigation />
@@ -36,7 +36,7 @@ const MoviePage = () => {
                 NEXT{' '}
                 {currentFranchise
                   ? currentFranchise.toUpperCase()
-                  : 'SUPERHERO '}
+                  : 'SUPERHERO '}{' '}
                 MOVIE:
               </h1>
             </div>

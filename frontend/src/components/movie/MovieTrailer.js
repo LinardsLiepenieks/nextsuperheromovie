@@ -4,12 +4,14 @@ const MovieTrailer = ({ movie }) => {
   return (
     <div className="flex justify-between py-14">
       <div className="ad-trailer-vertical"></div>
-      <div>
+      <div className="flex-1 px-4">
         <div>
           {movie && (
             <>
-              <h3 className="text-secondary text-4xl mb-px -ml-1">TRAILER</h3>
-              <div className="aspect-16/9">
+              <h3 className="text-secondary text-4xl mb-px -ml-1 drop-shadow-xs">
+                TRAILER
+              </h3>
+              <div className="w-full drop-shadow-2xl">
                 <YoutubeVideo trailerLink={movie.trailerLink} />
               </div>
             </>
