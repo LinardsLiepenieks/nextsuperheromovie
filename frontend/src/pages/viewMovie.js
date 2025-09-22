@@ -9,9 +9,8 @@ import MovieList from '../components/movie/MovieList';
 
 const MoviePage = () => {
   const [selectedPhase, setSelectedPhase] = useState(null);
-  const { currentMovie, updateMovie, phases, pageMovies, getCurrentMovie } =
-    useMovieContext();
-  const { hoveredFranchise } = useThemeContext();
+  const { currentMovie, updateMovie, phases, pageMovies } = useMovieContext();
+  const { currentFranchise } = useThemeContext();
 
   useEffect(() => {
     if (currentMovie?.phase) {
@@ -28,14 +27,17 @@ const MoviePage = () => {
 
   return (
     <main>
-      <section className="bg-accent pt-16">
-        <div className="max-w-6xl mx-auto py-12">
+      <section className="bg-accent pt-16 transition-colors duration-150 ease">
+        <div className="max-w-7xl mx-auto py-12">
           <div className="font-roboto-condensed mb-12">
             <div>
               <FranchiseNavigation />
-              <h1 className="text-title-lg font-medium text-secondary drop-shadow-md">
-                NEXT {hoveredFranchise ? hoveredFranchise.toUpperCase() : ''}{' '}
-                MOVIE
+              <h1 className="text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4">
+                NEXT{' '}
+                {currentFranchise
+                  ? currentFranchise.toUpperCase()
+                  : 'SUPERHERO '}
+                MOVIE:
               </h1>
             </div>
             <NextMovieDisplay key={currentMovie?._id} movie={currentMovie} />

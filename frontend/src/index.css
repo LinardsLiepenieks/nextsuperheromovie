@@ -27,7 +27,8 @@
 /* Marvel theme (default) */
 [data-theme='marvel'] {
   --accent: #ed1d24;
-  --title-color: #000000;
+  --title-color: #1e1e24;
+  --secondary: #eff1ed;
   --effect-color: #ed1d24;
 }
 
@@ -35,15 +36,16 @@
 [data-theme='dc'] {
   --accent: #263f75;
   --secondary: #f6f7ff;
-  --title-color: #ffd100;
+  --title-color: #ffcf0f;
   --effect-color: #ffd100;
 }
 
 /* Sony theme */
 [data-theme='sony'] {
-  --accent: #343a47;
-  --title-color: #823bc2;
+  --accent: #1a1a1a;
+  --title-color: #65afff; /* Electric blue */
   --effect-color: #823bc2;
+  --secondary: #f6fafd;
 }
 
 body {
