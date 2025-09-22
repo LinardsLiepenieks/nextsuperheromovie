@@ -9,7 +9,6 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Set the data-theme attribute on the document element
-    console.log('TEST');
     if (currentFranchise) {
       document.documentElement.setAttribute('data-theme', currentFranchise);
     } else {

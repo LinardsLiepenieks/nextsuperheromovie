@@ -4,145 +4,246 @@ import React, {
   useContext,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
-import { useLoading } from './LoadingContext';
 import { useMetadata } from './MetadataContext';
 import { useThemeContext } from './ThemeContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const MovieContext = createContext();
+const VALID_FRANCHISES = ['marvel', 'dc', 'sony'];
 
-export const useMovieContext = () => useContext(MovieContext);
+const MovieContext = createContext(null);
+
+export const useMovieContext = () => {
+  const context = useContext(MovieContext);
+  if (!context) {
+    throw new Error('useMovieContext must be used within a MovieProvider');
+  }
+  return context;
+};
 
 export const MovieProvider = ({ children }) => {
-  const [movies, setMovies] = useState(null);
+  const [movies, setMovies] = useState([]);
   const [currentMovie, setCurrentMovie] = useState(null);
-  const [pageMovies, setPageMovies] = useState(null);
-  const [phases, setPhases] = useState(null);
-  const { setLoading } = useLoading();
+  const [currentPhase, setCurrentPhase] = useState(null);
+  const [error, setError] = useState(null);
+
   const { setDescription, setKeywords } = useMetadata();
   const { setCurrentFranchise } = useThemeContext();
-  const apiUrl = process.env.REACT_APP_API_URL;
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get franchise from URL path
-  const currentFranchise = location.pathname.slice(1);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
-  // Filters and sets current movie
-  const getCurrentMovie = useCallback((data) => {
+  const currentFranchise = useMemo(() => {
+    const pathFranchise = location.pathname.slice(1);
+    return VALID_FRANCHISES.includes(pathFranchise) ? pathFranchise : null;
+  }, [location.pathname]);
+
+  const pageMovies = useMemo(() => {
+    if (!currentFranchise || !movies.length) return [];
+    return movies.filter((movie) => movie.brand === currentFranchise);
+  }, [currentFranchise, movies]);
+
+  const phases = useMemo(() => {
+    if (!pageMovies.length) return [];
+    const phaseSet = new Set(pageMovies.map((movie) => movie.phase));
+    return Array.from(phaseSet).sort((a, b) => {
+      // Handle numeric phases (1, 2, 3) and string phases - sort in DECREASING order
+      const aNum = parseInt(a);
+      const bNum = parseInt(b);
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        return bNum - aNum; // Reversed for decreasing order
+      }
+      return b.localeCompare(a); // Reversed for decreasing order
+    });
+  }, [pageMovies]);
+
+  const moviesByPhase = useMemo(() => {
+    if (!pageMovies.length) return {};
+    return pageMovies.reduce((acc, movie) => {
+      if (!acc[movie.phase]) {
+        acc[movie.phase] = [];
+      }
+      acc[movie.phase].push(movie);
+      return acc;
+    }, {});
+  }, [pageMovies]);
+
+  // Get the newest upcoming movie from the franchise
+  const getNewestUpcomingMovie = useCallback((movieList) => {
+    if (!movieList?.length) return null;
+
     const today = new Date();
-    const upcomingMovies = data.filter(
-      (movie) => new Date(movie.releaseDate) > today
-    );
+    const upcomingMovies = movieList
+      .filter((movie) => new Date(movie.releaseDate) > today)
+      .sort((a, b) => new Date(a.releaseDate) - new Date(b.releaseDate));
 
-    upcomingMovies.sort(
-      (a, b) => new Date(a.releaseDate) - new Date(b.releaseDate)
-    );
-
-    return upcomingMovies[0];
+    return upcomingMovies[0] || null;
   }, []);
 
-  // Fetches movies from api
+  // Get the most recent movie from the franchise (released or upcoming)
+  const getMostRecentMovie = useCallback((movieList) => {
+    if (!movieList?.length) return null;
+
+    // Sort by release date, newest first
+    const sortedMovies = [...movieList].sort(
+      (a, b) => new Date(b.releaseDate) - new Date(a.releaseDate)
+    );
+
+    return sortedMovies[0];
+  }, []);
+
   const fetchMovies = useCallback(async () => {
     try {
-      setLoading(true);
+      setError(null);
+
       const response = await fetch(`${apiUrl}api/movies`);
-      const data = await response.json();
-
-      if (data.length > 0) {
-        setMovies(data);
-      } else {
-        setMovies(['ELSE']);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } catch (error) {
-      console.error('Error fetching /api/movies ', error);
-      setMovies(['ERROR']);
-    } finally {
-      setLoading(false);
+
+      const data = await response.json();
+      setMovies(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Error fetching movies:', err);
+      setError(err.message);
+      setMovies([]);
     }
-  }, [apiUrl, setLoading]);
+  }, [apiUrl]);
 
-  // Fetch all movies from db
-  useEffect(() => {
-    fetchMovies();
-  }, [fetchMovies]);
-
-  // Update movie metadata
   const updateMovie = useCallback(
     (movie) => {
-      if (movie) {
-        setCurrentMovie(movie);
-        setDescription(movie.title + ' out at ' + movie.releaseDate);
-        setKeywords(movie.title);
-      }
+      if (!movie) return;
+
+      setCurrentMovie(movie);
+      setCurrentPhase(movie.phase);
+      setDescription(`${movie.title} out at ${movie.releaseDate}`);
+      setKeywords(movie.title);
     },
     [setDescription, setKeywords]
   );
 
-  // Set theme based on URL path
+  // Function to manually set a specific movie
+  const setSelectedMovie = useCallback(
+    (movie) => {
+      if (movie && movie.brand === currentFranchise) {
+        updateMovie(movie);
+      }
+    },
+    [currentFranchise, updateMovie]
+  );
+
+  // Function to switch to a different phase
+  const switchToPhase = useCallback(
+    (phase) => {
+      if (!moviesByPhase[phase] || !moviesByPhase[phase].length) return;
+
+      // Get the most recent movie from this phase
+      const phaseMovie = getMostRecentMovie(moviesByPhase[phase]);
+      if (phaseMovie) {
+        updateMovie(phaseMovie);
+      }
+    },
+    [moviesByPhase, getMostRecentMovie, updateMovie]
+  );
+
+  // Fetch movies on mount
   useEffect(() => {
-    if (
-      currentFranchise &&
-      ['marvel', 'dc', 'sony'].includes(currentFranchise)
-    ) {
+    fetchMovies();
+  }, [fetchMovies]);
+
+  // Set theme based on current franchise
+  useEffect(() => {
+    if (currentFranchise) {
       setCurrentFranchise(currentFranchise);
     }
   }, [currentFranchise, setCurrentFranchise]);
 
-  // Initial movie load - redirect to appropriate franchise URL
+  // Handle initial redirect when no franchise is selected
   useEffect(() => {
-    if (
-      movies &&
-      movies.length > 0 &&
-      (!currentFranchise || currentFranchise === '')
-    ) {
-      // Get the next upcoming movie
-      const nextMovie = getCurrentMovie(movies);
-      if (nextMovie && nextMovie.brand) {
-        // Redirect to the franchise page
+    if (movies.length > 0 && !currentFranchise) {
+      // Get the newest upcoming movie across all franchises
+      const nextMovie = getNewestUpcomingMovie(movies);
+      if (nextMovie?.brand && VALID_FRANCHISES.includes(nextMovie.brand)) {
         navigate(`/${nextMovie.brand}`, { replace: true });
+      } else {
+        // If no upcoming movies, get the most recent movie
+        const recentMovie = getMostRecentMovie(movies);
+        if (
+          recentMovie?.brand &&
+          VALID_FRANCHISES.includes(recentMovie.brand)
+        ) {
+          navigate(`/${recentMovie.brand}`, { replace: true });
+        }
       }
     }
-  }, [movies, currentFranchise, getCurrentMovie, navigate]);
+  }, [
+    movies,
+    currentFranchise,
+    getNewestUpcomingMovie,
+    getMostRecentMovie,
+    navigate,
+  ]);
 
-  // Filter movies by franchise when URL changes
+  // Update current movie when franchise changes (this is the key fix)
   useEffect(() => {
-    if (currentFranchise && movies && movies.length > 0) {
-      const filteredMovies = movies.filter(
-        (movie) => movie.brand === currentFranchise
-      );
+    if (currentFranchise && pageMovies.length > 0) {
+      // First try to get the newest upcoming movie from this franchise
+      let targetMovie = getNewestUpcomingMovie(pageMovies);
 
-      setPageMovies(filteredMovies);
+      // If no upcoming movies, get the most recent movie from this franchise
+      if (!targetMovie) {
+        targetMovie = getMostRecentMovie(pageMovies);
+      }
 
-      // Create unique phases
-      const phaseSet = new Set();
-      filteredMovies.forEach((movie) => {
-        phaseSet.add(movie.phase);
-      });
-      setPhases(Array.from(phaseSet));
-
-      // Set current movie for this franchise
-      const nextMovie = getCurrentMovie(filteredMovies);
-      if (nextMovie) {
-        updateMovie(nextMovie);
+      if (targetMovie) {
+        updateMovie(targetMovie);
       }
     }
-  }, [currentFranchise, movies, getCurrentMovie, updateMovie]);
+  }, [
+    currentFranchise,
+    pageMovies,
+    getNewestUpcomingMovie,
+    getMostRecentMovie,
+    updateMovie,
+  ]);
+
+  const contextValue = useMemo(
+    () => ({
+      movies,
+      currentMovie,
+      currentPhase,
+      pageMovies,
+      phases,
+      moviesByPhase,
+      error,
+      updateMovie,
+      setSelectedMovie,
+      switchToPhase,
+      getNewestUpcomingMovie,
+      getMostRecentMovie,
+      currentFranchise,
+    }),
+    [
+      movies,
+      currentMovie,
+      currentPhase,
+      pageMovies,
+      phases,
+      moviesByPhase,
+      error,
+      updateMovie,
+      setSelectedMovie,
+      switchToPhase,
+      getNewestUpcomingMovie,
+      getMostRecentMovie,
+      currentFranchise,
+    ]
+  );
 
   return (
-    <MovieContext.Provider
-      value={{
-        movies,
-        setMovies,
-        currentMovie,
-        updateMovie,
-        phases,
-        pageMovies,
-        getCurrentMovie,
-        setCurrentMovie,
-      }}
-    >
+    <MovieContext.Provider value={contextValue}>
       {children}
     </MovieContext.Provider>
   );
