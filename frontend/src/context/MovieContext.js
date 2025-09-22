@@ -8,25 +8,28 @@ import React, {
 import { useLoading } from './LoadingContext';
 import { useMetadata } from './MetadataContext';
 import { useThemeContext } from './ThemeContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MovieContext = createContext();
 
 export const useMovieContext = () => useContext(MovieContext);
 
 export const MovieProvider = ({ children }) => {
-  const [movies, setMovies] = useState(null); // all movies so don't have to re-fetch
-  const [currentMovie, setCurrentMovie] = useState(null); //current diplayed movie
-  const [pageMovies, setPageMovies] = useState(null); //movies for brand filtering
-  const [phases, setPhases] = useState(null); //phases or years
+  const [movies, setMovies] = useState(null);
+  const [currentMovie, setCurrentMovie] = useState(null);
+  const [pageMovies, setPageMovies] = useState(null);
+  const [phases, setPhases] = useState(null);
   const { setLoading } = useLoading();
   const { setDescription, setKeywords } = useMetadata();
-  const { hoveredFranchise, setHoveredFranchise } = useThemeContext();
+  const { setCurrentFranchise } = useThemeContext();
   const apiUrl = process.env.REACT_APP_API_URL;
-
   const location = useLocation();
+  const navigate = useNavigate();
 
-  //filters and sets current movie
+  // Get franchise from URL path
+  const currentFranchise = location.pathname.slice(1);
+
+  // Filters and sets current movie
   const getCurrentMovie = useCallback((data) => {
     const today = new Date();
     const upcomingMovies = data.filter(
@@ -39,12 +42,12 @@ export const MovieProvider = ({ children }) => {
 
     return upcomingMovies[0];
   }, []);
-  //fetches movies from api
+
+  // Fetches movies from api
   const fetchMovies = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`${apiUrl}api/movies`);
-
       const data = await response.json();
 
       if (data.length > 0) {
@@ -55,18 +58,17 @@ export const MovieProvider = ({ children }) => {
     } catch (error) {
       console.error('Error fetching /api/movies ', error);
       setMovies(['ERROR']);
-      // Display an error message or handle the error in a user-friendly way
     } finally {
       setLoading(false);
     }
-    console.log('MOVIES', movies);
   }, [apiUrl, setLoading]);
 
-  //fetches all movies from db
+  // Fetch all movies from db
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies]);
 
+  // Update movie metadata
   const updateMovie = useCallback(
     (movie) => {
       if (movie) {
@@ -78,49 +80,61 @@ export const MovieProvider = ({ children }) => {
     [setDescription, setKeywords]
   );
 
+  // Set theme based on URL path
   useEffect(() => {
-    const filterByFranchise = () => {
-      setHoveredFranchise(location.pathname.slice(1));
-
-      if (hoveredFranchise && movies && movies.length > 0) {
-        const filteredMovies = movies.filter(
-          (movie) => movie.brand === hoveredFranchise
-        );
-        setPageMovies(filteredMovies);
-        // Create a new Set to store unique phase values
-        const phaseSet = new Set();
-
-        // Iterate over the filteredMovies array and add each unique phase value to the Set
-        filteredMovies.forEach((movie) => {
-          phaseSet.add(movie.phase);
-        });
-
-        // Convert the Set back to an array to get the unique phase values
-        setPhases(Array.from(phaseSet));
-        setCurrentMovie(getCurrentMovie(filteredMovies));
-      }
-    };
-    filterByFranchise();
-  }, [
-    hoveredFranchise,
-    setHoveredFranchise,
-    movies,
-    location.pathname,
-    getCurrentMovie,
-  ]);
-
-  useEffect(() => {
-    if (currentMovie) {
-      setHoveredFranchise(currentMovie.brand);
+    if (
+      currentFranchise &&
+      ['marvel', 'dc', 'sony'].includes(currentFranchise)
+    ) {
+      setCurrentFranchise(currentFranchise);
     }
-  }, [currentMovie, setHoveredFranchise]);
+  }, [currentFranchise, setCurrentFranchise]);
+
+  // Initial movie load - redirect to appropriate franchise URL
+  useEffect(() => {
+    if (
+      movies &&
+      movies.length > 0 &&
+      (!currentFranchise || currentFranchise === '')
+    ) {
+      // Get the next upcoming movie
+      const nextMovie = getCurrentMovie(movies);
+      if (nextMovie && nextMovie.brand) {
+        // Redirect to the franchise page
+        navigate(`/${nextMovie.brand}`, { replace: true });
+      }
+    }
+  }, [movies, currentFranchise, getCurrentMovie, navigate]);
+
+  // Filter movies by franchise when URL changes
+  useEffect(() => {
+    if (currentFranchise && movies && movies.length > 0) {
+      const filteredMovies = movies.filter(
+        (movie) => movie.brand === currentFranchise
+      );
+
+      setPageMovies(filteredMovies);
+
+      // Create unique phases
+      const phaseSet = new Set();
+      filteredMovies.forEach((movie) => {
+        phaseSet.add(movie.phase);
+      });
+      setPhases(Array.from(phaseSet));
+
+      // Set current movie for this franchise
+      const nextMovie = getCurrentMovie(filteredMovies);
+      if (nextMovie) {
+        updateMovie(nextMovie);
+      }
+    }
+  }, [currentFranchise, movies, getCurrentMovie, updateMovie]);
 
   return (
     <MovieContext.Provider
       value={{
         movies,
         setMovies,
-        //loading,
         currentMovie,
         updateMovie,
         phases,

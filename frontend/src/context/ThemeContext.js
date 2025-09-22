@@ -5,39 +5,23 @@ const ThemeContext = createContext();
 export const useThemeContext = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [hoveredFranchise, setHoveredFranchise] = useState(null);
+  const [currentFranchise, setCurrentFranchise] = useState(null);
 
-  const updateCSSVariables = (franchise) => {
-    switch (franchise) {
-      case 'marvel':
-        document.documentElement.style.setProperty('--accent', '#ed1d24');
-        document.documentElement.style.setProperty('--title-color', '#000000');
-        document.documentElement.style.setProperty('--effect-color', '#ed1d24');
-        break;
-      case 'dc':
-        document.documentElement.style.setProperty('--accent', '#263f75');
-        document.documentElement.style.setProperty('--secondary', '#f6f7ff');
-        document.documentElement.style.setProperty('--title-color', '#ffd100');
-        document.documentElement.style.setProperty('--effect-color', '#ffd100');
-        break;
-      case 'sony':
-        document.documentElement.style.setProperty('--accent', '#343a47');
-        document.documentElement.style.setProperty('--title-color', '#823bc2');
-        document.documentElement.style.setProperty('--effect-color', '#823bc2');
-        break;
-      default:
-        break;
-    }
-  };
   useEffect(() => {
-    updateCSSVariables(hoveredFranchise);
-  }, [hoveredFranchise]);
+    // Set the data-theme attribute on the document element
+    console.log('TEST');
+    if (currentFranchise) {
+      document.documentElement.setAttribute('data-theme', currentFranchise);
+    } else {
+      // Default to marvel or remove the attribute
+      document.documentElement.setAttribute('data-theme', 'marvel');
+    }
+  }, [currentFranchise]);
 
   return (
     <ThemeContext.Provider
       value={{
-        setHoveredFranchise,
-        hoveredFranchise,
+        setCurrentFranchise,
       }}
     >
       {children}

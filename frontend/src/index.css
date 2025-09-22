@@ -3,10 +3,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --primary: #000000;
   --secondary: #fff;
   --accent: #ed1d24;
+  --title-color: #000000;
+  --effect-color: #ed1d24;
 
   --hero: 9.31rem;
   --hero-sm: 7.45rem;
@@ -19,6 +22,28 @@
   --fs-xl: 1.563rem;
   --fs-lg: 1.25rem;
   --fs-md: 1rem;
+}
+
+/* Marvel theme (default) */
+[data-theme='marvel'] {
+  --accent: #ed1d24;
+  --title-color: #000000;
+  --effect-color: #ed1d24;
+}
+
+/* DC theme */
+[data-theme='dc'] {
+  --accent: #263f75;
+  --secondary: #f6f7ff;
+  --title-color: #ffd100;
+  --effect-color: #ffd100;
+}
+
+/* Sony theme */
+[data-theme='sony'] {
+  --accent: #343a47;
+  --title-color: #823bc2;
+  --effect-color: #823bc2;
 }
 
 body {
