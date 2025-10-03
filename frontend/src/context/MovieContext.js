@@ -138,20 +138,25 @@ export const MovieProvider = ({ children }) => {
     [apiUrl]
   );
 
-  // Stable updateMovie function
-  const updateMovie = useCallback((movie) => {
-    if (!movie) return;
+  // Stable updateMovie function - only updates activeFranchise if it changed
+  const updateMovie = useCallback(
+    (movie) => {
+      if (!movie) return;
 
-    setCurrentMovie(movie);
-    setCurrentPhase(movie.phase);
-    setDescription(`${movie.title} out at ${movie.releaseDate}`);
-    setKeywords(movie.title);
+      setCurrentMovie(movie);
+      setCurrentPhase(movie.phase);
+      setDescription(`${movie.title} out at ${movie.releaseDate}`);
+      setKeywords(movie.title);
 
-    // Always set active franchise when a movie is selected
-    if (movie.brand) {
-      setActiveFranchise(movie.brand);
-    }
-  }, []);
+      // Only set active franchise if it's different to prevent unnecessary re-renders
+      if (movie.brand) {
+        setActiveFranchise((prev) =>
+          prev === movie.brand ? prev : movie.brand
+        );
+      }
+    },
+    [setDescription, setKeywords]
+  );
 
   // Function to manually set a specific movie
   const setSelectedMovie = useCallback(
@@ -185,9 +190,12 @@ export const MovieProvider = ({ children }) => {
     return () => controller.abort();
   }, [fetchMovies]);
 
-  // Handle landing page: set movie and active franchise
+  // Handle landing page: set movie and active franchise but NOT theme
   useEffect(() => {
     if (movies.length > 0 && isLandingPage) {
+      // Clear theme on landing page
+      setCurrentFranchise(null);
+
       // Get the newest upcoming movie across all franchises
       let nextMovie = getNewestUpcomingMovie(movies);
 
@@ -197,7 +205,7 @@ export const MovieProvider = ({ children }) => {
       }
 
       if (nextMovie) {
-        // Set the current movie (which will also set activeFranchise)
+        // Set the current movie (which will also set activeFranchise for filtering)
         updateMovie(nextMovie);
       }
     }
@@ -207,36 +215,36 @@ export const MovieProvider = ({ children }) => {
     getNewestUpcomingMovie,
     getMostRecentMovie,
     updateMovie,
+    setCurrentFranchise,
   ]);
 
   // Update current movie when franchise page changes
   useEffect(() => {
     // Only update if we're on a franchise page and franchise changed
-    if (
-      !isLandingPage &&
-      currentFranchise &&
-      initializedFranchiseRef.current !== currentFranchise
-    ) {
-      initializedFranchiseRef.current = currentFranchise;
+    if (!isLandingPage && currentFranchise && movies.length > 0) {
+      // Only initialize if we haven't for this franchise yet
+      if (initializedFranchiseRef.current !== currentFranchise) {
+        initializedFranchiseRef.current = currentFranchise;
 
-      // Set active franchise
-      setActiveFranchise(currentFranchise);
+        // Set active franchise
+        setActiveFranchise(currentFranchise);
 
-      // Get movies for this franchise
-      const franchiseMovies = movies.filter(
-        (movie) => movie.brand === currentFranchise
-      );
+        // Get movies for this franchise
+        const franchiseMovies = movies.filter(
+          (movie) => movie.brand === currentFranchise
+        );
 
-      // First try to get the newest upcoming movie from this franchise
-      let targetMovie = getNewestUpcomingMovie(franchiseMovies);
+        // First try to get the newest upcoming movie from this franchise
+        let targetMovie = getNewestUpcomingMovie(franchiseMovies);
 
-      // If no upcoming movies, get the most recent movie from this franchise
-      if (!targetMovie) {
-        targetMovie = getMostRecentMovie(franchiseMovies);
-      }
+        // If no upcoming movies, get the most recent movie from this franchise
+        if (!targetMovie) {
+          targetMovie = getMostRecentMovie(franchiseMovies);
+        }
 
-      if (targetMovie) {
-        updateMovie(targetMovie);
+        if (targetMovie) {
+          updateMovie(targetMovie);
+        }
       }
     }
   }, [
@@ -250,12 +258,14 @@ export const MovieProvider = ({ children }) => {
 
   // Set display franchise for theme (only on franchise pages)
   useEffect(() => {
-    if (displayFranchise) {
-      setCurrentFranchise(displayFranchise);
+    if (!isLandingPage) {
+      if (displayFranchise) {
+        setCurrentFranchise(displayFranchise);
+      }
     }
-  }, [displayFranchise, setCurrentFranchise]);
+  }, [displayFranchise, setCurrentFranchise, isLandingPage]);
 
-  // Reset initialized ref when leaving landing page
+  // Reset initialized ref when leaving franchise page
   useEffect(() => {
     if (isLandingPage) {
       initializedFranchiseRef.current = null;

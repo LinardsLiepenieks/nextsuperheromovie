@@ -12,8 +12,8 @@ export const ThemeProvider = ({ children }) => {
     if (currentFranchise) {
       document.documentElement.setAttribute('data-theme', currentFranchise);
     } else {
-      // Default to marvel or remove the attribute
-      document.documentElement.setAttribute('data-theme', 'marvel');
+      // Remove theme attribute instead of defaulting to marvel
+      document.documentElement.removeAttribute('data-theme');
     }
   }, [currentFranchise]);
 
