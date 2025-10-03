@@ -68,7 +68,7 @@ export default function LandingDotsMid() {
   }, []);
 
   return (
-    <div className="absolute -bottom-16 -left-20 w-full h-full pointer-events-none z-0 ">
+    <div className="absolute bottom-4 -left-20 w-full h-full pointer-events-none z-0 ">
       <div
         className=""
         style={{
@@ -86,7 +86,7 @@ export default function LandingDotsMid() {
               top: `${dot.y}px`,
               width: `${dot.size}px`,
               height: `${dot.size}px`,
-              backgroundColor: 'var(--primary)',
+              backgroundColor: 'var(--dot-color)',
               opacity: dot.opacity,
             }}
           />

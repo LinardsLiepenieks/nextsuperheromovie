@@ -86,7 +86,7 @@ export default function LandingDotsTop() {
               top: `${dot.y}px`,
               width: `${dot.size}px`,
               height: `${dot.size}px`,
-              backgroundColor: 'var(--primary)',
+              backgroundColor: 'var(--dot-color)',
               opacity: dot.opacity,
             }}
           />
