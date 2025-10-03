@@ -70,7 +70,7 @@ const MoviePage = () => {
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-secondary">
-            <h2 className="text-title-lg font-medium tracking-wide pb-1">
+            <h2 className="text-4xl lg:text-title-lg font-medium tracking-wide pb-1">
               Other movies
             </h2>
             <PhaseSelector

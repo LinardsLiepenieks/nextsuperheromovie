@@ -9,7 +9,7 @@ const PhaseSelector = ({ phases, selectedPhase, onPhaseSelect }) => {
         <li
           key={phase}
           onClick={() => onPhaseSelect(phase)}
-          className={`text-3xl cursor-pointer hover:text-secondary animation-colors duration-300  whitespace-nowrap ${
+          className={`text-2xl lg:text-3xl cursor-pointer hover:text-secondary animation-colors duration-300  whitespace-nowrap ${
             selectedPhase === phase ? 'text-secondary' : 'text-secondary/70'
           }`}
         >

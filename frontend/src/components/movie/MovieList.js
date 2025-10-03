@@ -61,7 +61,7 @@ const MovieList = ({ movies, selectedPhase, currentMovieId, onMovieClick }) => {
     >
       <ul
         ref={listRef}
-        className={`text-3xl font-normal flex-col gap-6 flex py-12 transition-opacity duration-300 ease-in-out ${
+        className={`text-2xl lg:text-3xl font-normal flex-col gap-6 flex py-12 transition-opacity duration-300 ease-in-out ${
           isTransitioning ? 'opacity-0' : 'opacity-100'
         }`}
       >
