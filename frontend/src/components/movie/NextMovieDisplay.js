@@ -54,17 +54,17 @@ const NextMovieDisplay = ({ movie, isLoading }) => {
         </div>
       ) : movie ? (
         <div ref={contentRef} className="transition-opacity duration-300">
-          <div className="pt-12 lg:pt-12 pb-4 lg:pb-16 ml-2 lg:ml-8">
-            <h2 className="text-title-lg lg:text-hero-sm text-title-color uppercase font-medium tracking-wide leading-none -ml-2.5 drop-shadow-lg mb-2 lg:mb-6 transition-colors duration-150 ease">
+          <div className="pt-8 lg:pt-12 pb-4 lg:pb-16 ml-2 lg:ml-8">
+            <h2 className="text-4xl lg:text-hero-sm text-title-color uppercase font-medium tracking-wide leading-none -ml-2.5 drop-shadow-lg mb-2 lg:mb-6 transition-colors duration-150 ease">
               {movie.title}
             </h2>
-            <div className="text-4xl drop-shadow-sm z-10 relative">
+            <div className="text-2xl drop-shadow-sm z-10 relative">
               {movie.releaseDate === 0 ? (
                 <span className="text-title-color transition-colors duration-150 ease">
                   TBA
                 </span>
               ) : (
-                <span className="text-title-color text-4xl lg:text-5xl transition-colors duration-150 ease -ml-2 lg:ml-0">
+                <span className="text-title-color text-2xl lg:text-5xl transition-colors duration-150 ease -ml-2 lg:ml-0">
                   {formatDate(movie.releaseDate)}
                 </span>
               )}

@@ -45,7 +45,7 @@ const MoviePage = () => {
               <FranchiseNavigation />
 
               <div className="relative">
-                <h1 className="relative text-5xl lg:text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4 z-10">
+                <h1 className="relative text-2xl lg:text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-8 lg:mt-4 z-10">
                   NEXT{' '}
                   {currentFranchise && !isLandingPage
                     ? currentFranchise.toUpperCase()
@@ -66,7 +66,7 @@ const MoviePage = () => {
 
       <section
         id="movies"
-        className="bg-primary font-roboto-condensed pt-12 pb-12 xl:px-0 px-8"
+        className="bg-primary font-roboto-condensed pt-12 pb-12 xl:px-0 px-8 z-20 relative"
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-secondary">
