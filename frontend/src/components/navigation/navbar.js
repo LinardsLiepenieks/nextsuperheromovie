@@ -10,7 +10,6 @@ const Navbar = () => {
 
   return (
     <nav className="bg-primary flex justify-center lg:justify-between py-6 px-12 fixed w-full z-50">
-      <div className="">NM</div>
       <ul className="flex gap-8">
         <li>
           <NavLink to="/marvel" variant="navbar" size="lg">
