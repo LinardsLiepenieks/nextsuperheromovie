@@ -31,6 +31,7 @@
   --secondary: #eff1ed;
   --effect-color: #ed1d24;
   --dot-color: #0f0f11;
+  --video-spinner: #ed1d24;
 }
 
 /* DC theme */
@@ -40,6 +41,7 @@
   --title-color: #ffcf0f;
   --effect-color: #ffd100;
   --dot-color: #a7a789;
+  --video-spinner: #ffcf0f;
 }
 
 /* Sony theme */
@@ -49,6 +51,7 @@
   --effect-color: #823bc2;
   --secondary: #f6fafd;
   --dot-color: #888a8c;
+  --video-spinner: #65afff;
 }
 
 body {

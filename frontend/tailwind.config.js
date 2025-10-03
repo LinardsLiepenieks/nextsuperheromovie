@@ -25,6 +25,8 @@ module.exports = {
         primary: 'rgb(from var(--primary) r g b / <alpha-value>)',
         secondary: 'rgb(from var(--secondary) r g b / <alpha-value>)',
         accent: 'rgb(from var(--accent) r g b / <alpha-value>)',
+        'video-spinner-color':
+          'rgb(from var(--video-spinner) r g b / <alpha-value>)',
         // Add theme-specific colors
         'title-color': 'rgb(from var(--title-color) r g b / <alpha-value>)',
         'effect-color': 'rgb(from var(--effect-color) r g b / <alpha-value>)',
