@@ -36,7 +36,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2 text-lg lg:text-xl font-light tracking-wide text-secondary/70 hover:text-secondary transition-all duration-300"
+                  className="flex items-center gap-2 text-sm lg:text-xl font-light tracking-wide text-secondary/70 hover:text-secondary transition-all duration-300"
                   href="https://github.com/LinardsLiepenieks"
                 >
                   <span className="h-full w-auto self-align-center material-symbols-outlined">
