@@ -36,7 +36,7 @@ const linkStyles = cva(['font-roboto-condensed'], {
       'franchise-active': ['text-secondary'],
     },
     size: {
-      lg: ['text-lg', 'px-1'],
+      lg: ['text-sm lg:text-lg', 'px-1'],
       '4xl': ['text-3xl xl:text-4xl'],
     },
   },
