@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MetadataProvider } from './context/MetadataContext';
 import { MovieProvider } from './context/MovieContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -8,6 +8,7 @@ import Footer from './components/footer';
 import PrivacyPolicy from './pages/privacyPolicy';
 import CookiePolicy from './pages/cookiePolicy';
 import TermsOfUse from './pages/termsOfUse';
+import { LoadingProvider } from './context/LoadingContext';
 function AppContent() {
   return (
     <>
@@ -33,13 +34,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <ThemeProvider>
-          <MetadataProvider>
-            <MovieProvider>
-              <AppContent></AppContent>
-            </MovieProvider>
-          </MetadataProvider>
-        </ThemeProvider>
+        <LoadingProvider>
+          <ThemeProvider>
+            <MetadataProvider>
+              <MovieProvider>
+                <AppContent></AppContent>
+              </MovieProvider>
+            </MetadataProvider>
+          </ThemeProvider>
+        </LoadingProvider>
       </BrowserRouter>
     </div>
   );

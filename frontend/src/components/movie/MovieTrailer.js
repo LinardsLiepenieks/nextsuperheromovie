@@ -11,7 +11,7 @@ const MovieTrailer = ({ movie }) => {
               <h3 className="text-secondary text-4xl mb-px -ml-1 drop-shadow-xs">
                 TRAILER
               </h3>
-              <div className="w-full drop-shadow-2xl">
+              <div className="w-full drop-shadow-2xl w-full aspect-video ">
                 <YoutubeVideo trailerLink={movie.trailerLink} />
               </div>
             </>

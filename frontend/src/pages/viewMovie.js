@@ -17,6 +17,7 @@ const MoviePage = () => {
     pageMovies,
     currentFranchise,
     isLandingPage,
+    isLoading,
   } = useMovieContext();
 
   useEffect(() => {
@@ -53,9 +54,12 @@ const MoviePage = () => {
                 </h1>
               </div>
             </div>
-            {/* Removed key prop to keep component mounted */}
-            <NextMovieDisplay movie={currentMovie} />
-            <MovieTrailer movie={currentMovie} />
+
+            <NextMovieDisplay movie={currentMovie} isLoading={isLoading} />
+
+            <div className="w-full aspect-video">
+              <MovieTrailer movie={currentMovie} />
+            </div>
           </div>
         </div>
       </section>
