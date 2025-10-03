@@ -40,12 +40,12 @@ const MoviePage = () => {
           <LandingDotsTop />
           <LandingDotsMid />
 
-          <div className="font-roboto-condensed mb-12">
+          <div className="font-roboto-condensed lg:mb-12">
             <div>
               <FranchiseNavigation />
 
               <div className="relative">
-                <h1 className="relative text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4 z-10">
+                <h1 className="relative text-5xl lg:text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4 z-10">
                   NEXT{' '}
                   {currentFranchise && !isLandingPage
                     ? currentFranchise.toUpperCase()
@@ -57,7 +57,7 @@ const MoviePage = () => {
 
             <NextMovieDisplay movie={currentMovie} isLoading={isLoading} />
 
-            <div className="w-full aspect-video">
+            <div className="w-screen xl:w-full aspect-video -mx-8 xl:mx-0 pt-4 lg:pt-0">
               <MovieTrailer movie={currentMovie} />
             </div>
           </div>

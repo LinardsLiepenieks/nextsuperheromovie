@@ -13,7 +13,7 @@ const FranchiseNavigation = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <ul className="flex gap-8 py-4">
+    <ul className="flex gap-8 lg:py-4">
       {franchises.map((franchise) => (
         <li key={franchise.path}>
           <NavLink

@@ -37,7 +37,7 @@ const CountdownTimer = ({ releaseDate }) => {
     months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0;
 
   return (
-    <span className="text-secondary text-6xl font-normal tracking-wide drop-shadow-md">
+    <span className="text-secondary text-3xl lg:text-6xl font-normal tracking-wide drop-shadow-md">
       {isReleased ? (
         'Movie released!'
       ) : (

@@ -37,7 +37,7 @@ const linkStyles = cva(['font-roboto-condensed'], {
     },
     size: {
       lg: ['text-lg', 'px-1'],
-      '4xl': ['text-4xl'],
+      '4xl': ['text-3xl xl:text-4xl'],
     },
   },
   defaultVariants: {
