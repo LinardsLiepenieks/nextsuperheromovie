@@ -7,6 +7,7 @@ import PhaseSelector from '../components/movie/PhaseSelector';
 import MovieList from '../components/movie/MovieList';
 import LandingDotsTop from '../components/backgrounds/landingDotsTop';
 import LandingDotsMid from '../components/backgrounds/landingDotsMid';
+
 const MoviePage = () => {
   const [selectedPhase, setSelectedPhase] = useState(null);
   const {
@@ -14,7 +15,7 @@ const MoviePage = () => {
     updateMovie,
     phases,
     pageMovies,
-    currentFranchise, // Use this from MovieContext, not ThemeContext
+    currentFranchise,
     isLandingPage,
   } = useMovieContext();
 
@@ -34,8 +35,9 @@ const MoviePage = () => {
   return (
     <main className="overflow-hidden">
       <section className="bg-accent pt-16 transition-colors duration-150 ease relative">
-        <div className="relative max-w-6xl mx-auto py-12 ">
+        <div className="relative max-w-6xl mx-auto py-12">
           <LandingDotsTop />
+          <LandingDotsMid />
 
           <div className="font-roboto-condensed mb-12">
             <div>
@@ -51,7 +53,8 @@ const MoviePage = () => {
                 </h1>
               </div>
             </div>
-            <NextMovieDisplay key={currentMovie?._id} movie={currentMovie} />
+            {/* Removed key prop to keep component mounted */}
+            <NextMovieDisplay movie={currentMovie} />
             <MovieTrailer movie={currentMovie} />
           </div>
         </div>

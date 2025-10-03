@@ -33,7 +33,7 @@ const MovieList = ({ movies, selectedPhase, currentMovieId, onMovieClick }) => {
       setTimeout(() => {
         setDisplayedMovies(filteredMovies);
         setIsTransitioning(false);
-      }, 150); // Half of the transition duration
+      }, 100); // Half of the transition duration
     } else {
       // Initial load or no phase change
       setDisplayedMovies(filteredMovies);

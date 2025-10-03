@@ -68,13 +68,13 @@ export default function LandingDotsMid() {
   }, []);
 
   return (
-    <div className="absolute bottom-4 -left-20 w-full h-full pointer-events-none z-0 ">
+    <div className="absolute bottom-0 -left-0 w-full h-full pointer-events-none z-0 overflow-visible">
       <div
         className=""
         style={{
           width: '520px',
           height: '520px',
-          transform: 'translate(-100%, 100%)',
+          transform: 'translate(-100%, 150%)',
         }}
       >
         {dots.map((dot) => (
