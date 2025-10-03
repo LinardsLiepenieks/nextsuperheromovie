@@ -68,30 +68,27 @@ export default function LandingDotsTop() {
   }, []);
 
   return (
-    <div className="absolute top-40 right-0 w-full h-full pointer-events-none z-0 ">
-      <div
-        className=""
-        style={{
-          width: '520px',
-          height: '520px',
-          transform: 'translate(200%, -50%)',
-        }}
-      >
-        {dots.map((dot) => (
-          <div
-            key={dot.id}
-            className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: `${dot.x}px`,
-              top: `${dot.y}px`,
-              width: `${dot.size}px`,
-              height: `${dot.size}px`,
-              backgroundColor: 'var(--dot-color)',
-              opacity: dot.opacity,
-            }}
-          />
-        ))}
-      </div>
+    <div
+      className="absolute -top-36 -right-80 translate-x-60 md:translate-x-20 lg:-right-60 pointer-events-none z-0"
+      style={{
+        width: '520px',
+        height: '520px',
+      }}
+    >
+      {dots.map((dot) => (
+        <div
+          key={dot.id}
+          className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
+          style={{
+            left: `${dot.x}px`,
+            top: `${dot.y}px`,
+            width: `${dot.size}px`,
+            height: `${dot.size}px`,
+            backgroundColor: 'var(--dot-color)',
+            opacity: dot.opacity,
+          }}
+        />
+      ))}
     </div>
   );
 }

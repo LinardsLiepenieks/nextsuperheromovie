@@ -4,12 +4,12 @@ const PhaseSelector = ({ phases, selectedPhase, onPhaseSelect }) => {
   }
 
   return (
-    <ul className="w-full flex gap-8 py-2">
+    <ul className="w-full flex gap-8 py-2 overflow-auto">
       {phases.map((phase) => (
         <li
           key={phase}
           onClick={() => onPhaseSelect(phase)}
-          className={`text-3xl cursor-pointer hover:text-secondary animation-colors duration-300 ${
+          className={`text-3xl cursor-pointer hover:text-secondary animation-colors duration-300  whitespace-nowrap ${
             selectedPhase === phase ? 'text-secondary' : 'text-secondary/70'
           }`}
         >

@@ -1,9 +1,9 @@
 import GitHubIcon from './ui/githubIcon';
 const Footer = () => {
   return (
-    <footer className="bg-primary text-secondary border-t-2 border-accent/80 mx-0 py-8 font-roboto-condensed pb-8">
+    <footer className="bg-primary text-secondary border-t-2 border-accent/80 mx-0 py-8 font-roboto-condensed pb-8 xl:px-0 px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between mb-8">
+        <div className="flex justify-between mb-8 flex-wrap">
           <div className="flex flex-col items-end justify-center gap-16 ">
             <a
               href="https://github.com/LinardsLiepenieks/nextsuperheromovie"

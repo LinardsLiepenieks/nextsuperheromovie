@@ -35,7 +35,7 @@ const MoviePage = () => {
 
   return (
     <main className="overflow-hidden">
-      <section className="bg-accent pt-16 transition-colors duration-150 ease relative">
+      <section className="bg-accent pt-16 transition-colors duration-150 ease relative px-8 xl:px-0">
         <div className="relative max-w-6xl mx-auto py-12">
           <LandingDotsTop />
           <LandingDotsMid />
@@ -66,7 +66,7 @@ const MoviePage = () => {
 
       <section
         id="movies"
-        className="bg-primary font-roboto-condensed pt-12 pb-12"
+        className="bg-primary font-roboto-condensed pt-12 pb-12 xl:px-0 px-8"
       >
         <div className="max-w-6xl mx-auto">
           <div className="text-secondary">
