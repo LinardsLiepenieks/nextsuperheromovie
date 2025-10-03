@@ -9,7 +9,7 @@ const NextMovieDisplay = ({ movie, isLoading }) => {
   const [isInitial, setIsInitial] = useState(true);
 
   // Minimum height to prevent layout shift during loading
-  const MIN_HEIGHT = 200;
+  const MIN_HEIGHT = 150;
 
   // Measure height whenever content changes using ResizeObserver
   useEffect(() => {

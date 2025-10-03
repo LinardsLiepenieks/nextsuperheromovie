@@ -57,7 +57,7 @@ const MoviePage = () => {
 
             <NextMovieDisplay movie={currentMovie} isLoading={isLoading} />
 
-            <div className="w-screen xl:w-full aspect-video -mx-8 xl:mx-0 pt-4 lg:pt-0">
+            <div className="w-full aspect-video pt-4 lg:pt-0">
               <MovieTrailer movie={currentMovie} />
             </div>
           </div>
