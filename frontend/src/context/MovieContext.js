@@ -5,10 +5,11 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
 } from 'react';
 import { useMetadata } from './MetadataContext';
 import { useThemeContext } from './ThemeContext';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const VALID_FRANCHISES = ['marvel', 'dc', 'sony'];
 
@@ -27,11 +28,14 @@ export const MovieProvider = ({ children }) => {
   const [currentMovie, setCurrentMovie] = useState(null);
   const [currentPhase, setCurrentPhase] = useState(null);
   const [error, setError] = useState(null);
+  const [activeFranchise, setActiveFranchise] = useState(null); // For filtering movies
+
+  // Track if we've initialized the current movie for this franchise
+  const initializedFranchiseRef = useRef(null);
 
   const { setDescription, setKeywords } = useMetadata();
   const { setCurrentFranchise } = useThemeContext();
   const location = useLocation();
-  const navigate = useNavigate();
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -40,10 +44,25 @@ export const MovieProvider = ({ children }) => {
     return VALID_FRANCHISES.includes(pathFranchise) ? pathFranchise : null;
   }, [location.pathname]);
 
+  const isLandingPage = useMemo(() => {
+    return location.pathname === '/';
+  }, [location.pathname]);
+
   const pageMovies = useMemo(() => {
-    if (!currentFranchise || !movies.length) return [];
-    return movies.filter((movie) => movie.brand === currentFranchise);
-  }, [currentFranchise, movies]);
+    if (!movies.length) return [];
+
+    // Filter by active franchise (works on both landing and franchise pages)
+    if (activeFranchise) {
+      return movies.filter((movie) => movie.brand === activeFranchise);
+    }
+
+    return [];
+  }, [activeFranchise, movies]);
+
+  // Display franchise: only set on franchise pages, null on landing (for text/labels)
+  const displayFranchise = useMemo(() => {
+    return isLandingPage ? null : currentFranchise;
+  }, [isLandingPage, currentFranchise]);
 
   const phases = useMemo(() => {
     if (!pageMovies.length) return [];
@@ -94,44 +113,54 @@ export const MovieProvider = ({ children }) => {
     return sortedMovies[0];
   }, []);
 
-  const fetchMovies = useCallback(async () => {
-    try {
-      setError(null);
+  const fetchMovies = useCallback(
+    async (signal) => {
+      try {
+        setError(null);
 
-      const response = await fetch(`${apiUrl}api/movies`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch(`${apiUrl}api/movies`, {
+          signal: signal,
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setMovies(Array.isArray(data) ? data : []);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          console.error('Error fetching movies:', err);
+          setError(err.message);
+          setMovies([]);
+        }
       }
-
-      const data = await response.json();
-      setMovies(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error('Error fetching movies:', err);
-      setError(err.message);
-      setMovies([]);
-    }
-  }, [apiUrl]);
-
-  const updateMovie = useCallback(
-    (movie) => {
-      if (!movie) return;
-
-      setCurrentMovie(movie);
-      setCurrentPhase(movie.phase);
-      setDescription(`${movie.title} out at ${movie.releaseDate}`);
-      setKeywords(movie.title);
     },
-    [setDescription, setKeywords]
+    [apiUrl]
   );
+
+  // Stable updateMovie function
+  const updateMovie = useCallback((movie) => {
+    if (!movie) return;
+
+    setCurrentMovie(movie);
+    setCurrentPhase(movie.phase);
+    setDescription(`${movie.title} out at ${movie.releaseDate}`);
+    setKeywords(movie.title);
+
+    // Always set active franchise when a movie is selected
+    if (movie.brand) {
+      setActiveFranchise(movie.brand);
+    }
+  }, []);
 
   // Function to manually set a specific movie
   const setSelectedMovie = useCallback(
     (movie) => {
-      if (movie && movie.brand === currentFranchise) {
+      if (movie) {
         updateMovie(movie);
       }
     },
-    [currentFranchise, updateMovie]
+    [updateMovie]
   );
 
   // Function to switch to a different phase
@@ -148,53 +177,62 @@ export const MovieProvider = ({ children }) => {
     [moviesByPhase, getMostRecentMovie, updateMovie]
   );
 
-  // Fetch movies on mount
+  // Fetch movies on mount with cleanup
   useEffect(() => {
-    fetchMovies();
+    const controller = new AbortController();
+    fetchMovies(controller.signal);
+
+    return () => controller.abort();
   }, [fetchMovies]);
 
-  // Set theme based on current franchise
+  // Handle landing page: set movie and active franchise
   useEffect(() => {
-    if (currentFranchise) {
-      setCurrentFranchise(currentFranchise);
-    }
-  }, [currentFranchise, setCurrentFranchise]);
-
-  // Handle initial redirect when no franchise is selected
-  useEffect(() => {
-    if (movies.length > 0 && !currentFranchise) {
+    if (movies.length > 0 && isLandingPage) {
       // Get the newest upcoming movie across all franchises
-      const nextMovie = getNewestUpcomingMovie(movies);
-      if (nextMovie?.brand && VALID_FRANCHISES.includes(nextMovie.brand)) {
-        navigate(`/${nextMovie.brand}`, { replace: true });
-      } else {
-        // If no upcoming movies, get the most recent movie
-        const recentMovie = getMostRecentMovie(movies);
-        if (
-          recentMovie?.brand &&
-          VALID_FRANCHISES.includes(recentMovie.brand)
-        ) {
-          navigate(`/${recentMovie.brand}`, { replace: true });
-        }
+      let nextMovie = getNewestUpcomingMovie(movies);
+
+      // If no upcoming movies, get the most recent movie
+      if (!nextMovie) {
+        nextMovie = getMostRecentMovie(movies);
+      }
+
+      if (nextMovie) {
+        // Set the current movie (which will also set activeFranchise)
+        updateMovie(nextMovie);
       }
     }
   }, [
     movies,
-    currentFranchise,
+    isLandingPage,
     getNewestUpcomingMovie,
     getMostRecentMovie,
-    navigate,
+    updateMovie,
   ]);
 
-  // Update current movie when franchise changes (this is the key fix)
+  // Update current movie when franchise page changes
   useEffect(() => {
-    if (currentFranchise && pageMovies.length > 0) {
+    // Only update if we're on a franchise page and franchise changed
+    if (
+      !isLandingPage &&
+      currentFranchise &&
+      initializedFranchiseRef.current !== currentFranchise
+    ) {
+      initializedFranchiseRef.current = currentFranchise;
+
+      // Set active franchise
+      setActiveFranchise(currentFranchise);
+
+      // Get movies for this franchise
+      const franchiseMovies = movies.filter(
+        (movie) => movie.brand === currentFranchise
+      );
+
       // First try to get the newest upcoming movie from this franchise
-      let targetMovie = getNewestUpcomingMovie(pageMovies);
+      let targetMovie = getNewestUpcomingMovie(franchiseMovies);
 
       // If no upcoming movies, get the most recent movie from this franchise
       if (!targetMovie) {
-        targetMovie = getMostRecentMovie(pageMovies);
+        targetMovie = getMostRecentMovie(franchiseMovies);
       }
 
       if (targetMovie) {
@@ -203,11 +241,26 @@ export const MovieProvider = ({ children }) => {
     }
   }, [
     currentFranchise,
-    pageMovies,
+    movies,
+    isLandingPage,
     getNewestUpcomingMovie,
     getMostRecentMovie,
     updateMovie,
   ]);
+
+  // Set display franchise for theme (only on franchise pages)
+  useEffect(() => {
+    if (displayFranchise) {
+      setCurrentFranchise(displayFranchise);
+    }
+  }, [displayFranchise, setCurrentFranchise]);
+
+  // Reset initialized ref when leaving landing page
+  useEffect(() => {
+    if (isLandingPage) {
+      initializedFranchiseRef.current = null;
+    }
+  }, [isLandingPage]);
 
   const contextValue = useMemo(
     () => ({
@@ -224,6 +277,9 @@ export const MovieProvider = ({ children }) => {
       getNewestUpcomingMovie,
       getMostRecentMovie,
       currentFranchise,
+      displayFranchise,
+      activeFranchise,
+      isLandingPage,
     }),
     [
       movies,
@@ -239,6 +295,9 @@ export const MovieProvider = ({ children }) => {
       getNewestUpcomingMovie,
       getMostRecentMovie,
       currentFranchise,
+      displayFranchise,
+      activeFranchise,
+      isLandingPage,
     ]
   );
 

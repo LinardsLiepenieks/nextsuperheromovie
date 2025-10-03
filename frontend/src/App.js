@@ -4,7 +4,6 @@ import { MovieProvider } from './context/MovieContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/navigation/navbar';
 import MoviePage from './pages/viewMovie';
-import Landing from './pages/landing';
 import Footer from './components/footer';
 import PrivacyPolicy from './pages/privacyPolicy';
 import CookiePolicy from './pages/cookiePolicy';
@@ -17,7 +16,7 @@ function AppContent() {
       </header>
 
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<MoviePage />} />
         <Route path="/marvel" element={<MoviePage />} />
         <Route path="/dc" element={<MoviePage />} />
         <Route path="/sony" element={<MoviePage />} />

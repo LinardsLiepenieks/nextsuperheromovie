@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useMovieContext } from '../context/MovieContext';
-import { useThemeContext } from '../context/ThemeContext';
 import FranchiseNavigation from '../components/navigation/FranchiseNavigation';
 import NextMovieDisplay from '../components/movie/NextMovieDisplay';
 import MovieTrailer from '../components/movie/MovieTrailer';
 import PhaseSelector from '../components/movie/PhaseSelector';
 import MovieList from '../components/movie/MovieList';
-
+import LandingDotsTop from '../components/backgrounds/landingDotsTop';
+import LandingDotsMid from '../components/backgrounds/landingDotsMid';
 const MoviePage = () => {
   const [selectedPhase, setSelectedPhase] = useState(null);
-  const { currentMovie, updateMovie, phases, pageMovies } = useMovieContext();
-  const { currentFranchise } = useThemeContext();
+  const {
+    currentMovie,
+    updateMovie,
+    phases,
+    pageMovies,
+    currentFranchise, // Use this from MovieContext, not ThemeContext
+    isLandingPage,
+  } = useMovieContext();
 
   useEffect(() => {
     if (currentMovie?.phase) {
@@ -26,19 +32,24 @@ const MoviePage = () => {
   };
 
   return (
-    <main>
-      <section className="bg-accent pt-16 transition-colors duration-150 ease">
-        <div className="max-w-6xl mx-auto py-12">
+    <main className="overflow-hidden">
+      <section className="bg-accent pt-16 transition-colors duration-150 ease relative">
+        <div className="relative max-w-6xl mx-auto py-12 ">
+          <LandingDotsTop />
+
           <div className="font-roboto-condensed mb-12">
             <div>
               <FranchiseNavigation />
-              <h1 className="text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4">
-                NEXT{' '}
-                {currentFranchise
-                  ? currentFranchise.toUpperCase()
-                  : 'SUPERHERO '}{' '}
-                MOVIE:
-              </h1>
+
+              <div className="relative">
+                <h1 className="relative text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-4 z-10">
+                  NEXT{' '}
+                  {currentFranchise && !isLandingPage
+                    ? currentFranchise.toUpperCase()
+                    : 'SUPERHERO'}{' '}
+                  MOVIE:
+                </h1>
+              </div>
             </div>
             <NextMovieDisplay key={currentMovie?._id} movie={currentMovie} />
             <MovieTrailer movie={currentMovie} />
