@@ -7,7 +7,6 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import { useMetadata } from './MetadataContext';
 import { useThemeContext } from './ThemeContext';
 import { useLoadingContext } from './LoadingContext';
 import { useLocation } from 'react-router-dom';
@@ -34,7 +33,6 @@ export const MovieProvider = ({ children }) => {
 
   const initializedFranchiseRef = useRef(null);
 
-  const { setDescription, setKeywords } = useMetadata();
   const { setCurrentFranchise } = useThemeContext();
   const { finishInitialLoad } = useLoadingContext();
   const location = useLocation();
@@ -144,8 +142,6 @@ export const MovieProvider = ({ children }) => {
 
       setCurrentMovie(movie);
       setCurrentPhase(movie.phase);
-      setDescription(`${movie.title} out at ${movie.releaseDate}`);
-      setKeywords(movie.title);
 
       if (movie.brand) {
         setActiveFranchise(movie.brand);
@@ -153,7 +149,7 @@ export const MovieProvider = ({ children }) => {
 
       finishInitialLoad();
     },
-    [finishInitialLoad, setDescription, setKeywords]
+    [finishInitialLoad]
   );
 
   const setSelectedMovie = useCallback(
