@@ -7,11 +7,6 @@ export default function LandingDotsMid() {
     const rows = 32;
     const cols = 32;
     const spacing = 32;
-    const containerSize = 520;
-
-    // Calculate offsets to center the dot pattern within the container
-    const offsetX = (containerSize - (cols - 1) * spacing) / 2;
-    const offsetY = (containerSize - (rows - 1) * spacing) / 2;
 
     // Center point for radial calculation
     const centerRow = (rows - 1) / 2;
@@ -56,8 +51,8 @@ export default function LandingDotsMid() {
 
         dotsArray.push({
           id: `${row}-${col}`,
-          x: col * spacing + offsetX,
-          y: row * spacing + offsetY,
+          x: col * spacing,
+          y: row * spacing,
           size: size,
           opacity: opacity,
         });
@@ -67,30 +62,30 @@ export default function LandingDotsMid() {
     return dotsArray;
   }, []);
 
+  const containerSize = 32 * 32; // rows/cols * spacing = 1024px
+
   return (
-    <div className="hidden lg:block absolute bottom-0 lg:bottom-40 -left-60 -translate-x-80 translate-y-80 lg:-translate-x-100 lg:-left-40 lg:translate-y-2/3 left-0 w-full h-full pointer-events-none z-0 overflow-visible">
-      <div
-        className=""
-        style={{
-          width: '520px',
-          height: '520px',
-        }}
-      >
-        {dots.map((dot) => (
-          <div
-            key={dot.id}
-            className="absolute rounded-full -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: `${dot.x}px`,
-              top: `${dot.y}px`,
-              width: `${dot.size}px`,
-              height: `${dot.size}px`,
-              backgroundColor: 'var(--dot-color)',
-              opacity: dot.opacity,
-            }}
-          />
-        ))}
-      </div>
+    <div
+      className="scale-50 lg:scale-100 absolute bottom-5 lg:bottom-20 -left-60 -translate-x-80 translate-y-80 lg:-translate-x-100 lg:-left-40 pointer-events-none z-0"
+      style={{
+        width: `${containerSize}px`,
+        height: `${containerSize}px`,
+      }}
+    >
+      {dots.map((dot) => (
+        <div
+          key={dot.id}
+          className="absolute rounded-full"
+          style={{
+            left: `${dot.x}px`,
+            top: `${dot.y}px`,
+            width: `${dot.size}px`,
+            height: `${dot.size}px`,
+            backgroundColor: 'var(--dot-color)',
+            opacity: dot.opacity,
+          }}
+        />
+      ))}
     </div>
   );
 }
