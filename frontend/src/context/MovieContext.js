@@ -180,16 +180,18 @@ export const MovieProvider = ({ children }) => {
     return () => controller.abort();
   }, [fetchMovies]);
 
+  // Landing page: always use Marvel and get upcoming or most recent Marvel movie
   useEffect(() => {
     if (movies.length > 0 && isLandingPage) {
-      let nextMovie = getNewestUpcomingMovie(movies);
+      const marvelMovies = movies.filter((movie) => movie.brand === 'marvel');
+      let marvelMovie = getNewestUpcomingMovie(marvelMovies);
 
-      if (!nextMovie) {
-        nextMovie = getMostRecentMovie(movies);
+      if (!marvelMovie) {
+        marvelMovie = getMostRecentMovie(marvelMovies);
       }
 
-      if (nextMovie) {
-        updateMovie(nextMovie);
+      if (marvelMovie) {
+        updateMovie(marvelMovie);
       }
     }
   }, [
@@ -200,6 +202,7 @@ export const MovieProvider = ({ children }) => {
     updateMovie,
   ]);
 
+  // Franchise pages: use the current franchise
   useEffect(() => {
     if (!isLandingPage && currentFranchise && movies.length > 0) {
       initializedFranchiseRef.current = currentFranchise;
@@ -228,11 +231,12 @@ export const MovieProvider = ({ children }) => {
     updateMovie,
   ]);
 
+  // Set theme: Marvel for landing, franchise theme for franchise pages
   useEffect(() => {
-    if (displayFranchise) {
-      setCurrentFranchise(displayFranchise);
-    } else if (isLandingPage) {
+    if (isLandingPage) {
       setCurrentFranchise('marvel');
+    } else if (displayFranchise) {
+      setCurrentFranchise(displayFranchise);
     }
   }, [displayFranchise, setCurrentFranchise, isLandingPage]);
 

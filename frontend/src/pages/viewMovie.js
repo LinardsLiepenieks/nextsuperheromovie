@@ -15,7 +15,7 @@ const MoviePage = () => {
     updateMovie,
     phases,
     pageMovies,
-    currentFranchise,
+    activeFranchise,
     isLandingPage,
     isLoading,
   } = useMovieContext();
@@ -47,8 +47,8 @@ const MoviePage = () => {
               <div className="relative">
                 <h1 className="relative text-2xl lg:text-title-lg font-medium text-secondary drop-shadow-md transition-colors duration-150 ease mt-8 lg:mt-4 z-10">
                   NEXT{' '}
-                  {currentFranchise && !isLandingPage
-                    ? currentFranchise.toUpperCase()
+                  {activeFranchise
+                    ? activeFranchise.toUpperCase()
                     : 'SUPERHERO'}{' '}
                   MOVIE:
                 </h1>
