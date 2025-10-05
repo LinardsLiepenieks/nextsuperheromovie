@@ -4,7 +4,7 @@ const PhaseSelector = ({ phases, selectedPhase, onPhaseSelect }) => {
   }
 
   return (
-    <ul className="w-full flex gap-8 py-2 overflow-auto">
+    <ul className="w-full flex gap-8 py-2 overflow-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-full">
       {phases.map((phase) => (
         <li
           key={phase}
